@@ -91,6 +91,10 @@ catalog:
       target: ../../examples/org.yaml
       rules:
         - allow: [User, Group]
+    - type: url
+      target: https://github.com/iocanel/software-templates/blob/main/showcase-templates.yaml
+      rules:
+        - allow: [Template]
 
     ## Uncomment these lines to add more example data
     # - type: url
