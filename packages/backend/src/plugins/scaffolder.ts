@@ -5,6 +5,7 @@ import type { PluginEnvironment } from '../types';
 import { createBuiltinActions } from '@backstage/plugin-scaffolder-backend';
 import { ScmIntegrations } from '@backstage/integration';
 import { createNewFileAction } from './scaffolder/actions/custom';
+import { cloneQuarkusQuickstart, createQuarkusApp } from './scaffolder/actions/quarkus';
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -22,7 +23,7 @@ export default async function createPlugin(
     reader: env.reader,
   });
 
-  const actions = [...builtInActions, createNewFileAction()];
+  const actions = [...builtInActions, createNewFileAction(), createQuarkusApp(), cloneQuarkusQuickstart()];
 
   return await createRouter({
     actions,
