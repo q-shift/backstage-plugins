@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, { useEffect } from 'react';
 import useAutocomplete from '@material-ui/lab/useAutocomplete';
-import useAutocomplete from '@material-ui/lab/useAutocomplete';
 import { FieldProps, FieldValidation } from '@rjsf/core';
 import FormControl from '@material-ui/core/FormControl';
 import axios from 'axios';

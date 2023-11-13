@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { clone }  from 'isomorphic-git';
 import http  from 'isomorphic-git/http/node';
 import { resolveSafeChildPath } from '@backstage/backend-common';
+import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
 
 const axios = require('axios');
 const os = require('os');
@@ -20,11 +21,14 @@ export const cloneQuarkusQuickstart = () => {
           artifactId: z.string().optional().describe('The artifactId'),
           version: z.string().optional().describe('The version'),
           quickstartName: z.string().describe('The name of the quickstart'),
+          targetPath: z.string().optional().describe('The target path'),
         }),
       }),
     },
 
     async handler(ctx) {
+      const targetPath = ctx.input.targetPath ?? './';
+      const outputDir = resolveSafeChildPath(ctx.workspacePath, targetPath);
       ctx.createTemporaryDirectory().then((tempDir) => {
         const cloneDir = path.join(tempDir, 'downloaded.zip');
         clone({
@@ -46,8 +50,9 @@ export const cloneQuarkusQuickstart = () => {
             doc.getElementsByTagName('groupId')[0].textContent = ctx.input.values.groupId;
             doc.getElementsByTagName('artifactId')[0].textContent = ctx.input.values.artifactId;
             doc.getElementsByTagName('version')[0].textContent = ctx.input.values.version;
+            const serializer = new XMLSerializer();
             //write doc as XML back to file
-            fs.writeFileSync(pomPath, doc.documentElement.outerHTML);
+            fs.writeFileSync(pomPath, serializer.serializeToString(doc));
         });
       });
     },
