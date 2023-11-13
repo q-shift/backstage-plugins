@@ -7,6 +7,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import styled from '@material-ui/core/styles/styled';
 import { FieldProps, FieldValidation } from '@rjsf/core';
 import FormControl from '@material-ui/core/FormControl';
+import axios from 'axios';
 
 const Label = styled('label')`
   padding: 0 0 4px;
@@ -145,18 +146,25 @@ export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData 
     defaultValue: [quarkusExtensions[1].name],
     multiple: true,
     options: quarkusExtensions,
-    getOptionLabel: (option) => option.name,
+    getOptionLabel: (option) => option.id,
   });
 
   // Download the Component list
-
+  useEffect(() => {
+      axios.get('https://code.quarkus.io/api/extensions').then((response) => {
+        response.data.forEach(e => {
+          console.log(e)
+          quarkusExtensions.push({ id: e.id, name: e.name })
+        })
+      })
+  }, []);
 
 
   // Populate value changes of autocomplete to the actual field
   useEffect(() => {
    onChange(value
-   .filter((extension: QuarkusExtensionType) => extension.name)
-   .map((extension: QuarkusExtensionType) => extension.name))
+   .filter((extension: QuarkusExtensionType) => extension.id)
+   .map((extension: QuarkusExtensionType) => extension.id))
   }, [value]);
 
   return (
@@ -197,11 +205,11 @@ interface QuarkusExtensionType {
 }
 
 const quarkusExtensions = [
-  { name: 'quarkus-resteasy-reactive', description: 'test' },
-  { name: 'quarkus-resteasy-reactive-jackson', description: 'test' },
-  { name: 'quarkus-container-image-docker', description: 'test' },
-  { name: 'quarkus-kubernetes', description: 'test' },
-  { name: 'quarkus-openshift', description: 'test' },
+  { id: 'quarkus-resteasy-reactive', name: 'Quarkus Resteasy Reactive' },
+  { id: 'quarkus-resteasy-reactive-jackson', name: 'Quarkus Resteasy Reactive Jackson' },
+  { id: 'quarkus-container-image-docker', name: 'Quarkus Container Image Docker' },
+  { id: 'quarkus-kubernetes', name: 'Quarkus Kubernetes' },
+  { id: 'quarkus-openshift', name: 'Quarkus OpenShift' },
 ];
 
 export const validateQuarkusExtension = (value: string, validation: FieldValidation) => { 
