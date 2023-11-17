@@ -22,6 +22,7 @@ export const cloneQuarkusQuickstart = () => {
           version: z.string().optional().describe('The version'),
           quickstartName: z.string().describe('The name of the quickstart'),
           targetPath: z.string().optional().describe('The target path'),
+          additionalProperties: z.string().optional().describe('Additional properties'),
         }),
       }),
     },
@@ -53,6 +54,14 @@ export const cloneQuarkusQuickstart = () => {
             const serializer = new XMLSerializer();
             //write doc as XML back to file
             fs.writeFileSync(pomPath, serializer.serializeToString(doc));
+
+            // If present, append additional properties to src/main/resources/application.properties
+            if (ctx.input.values.additionalProperties) {
+              const propertiesPath = path.join(outputDir, 'src/main/resources/application.properties');
+              const propertiesContent = fs.readFileSync(propertiesPath, 'utf8');
+              const updatedPropertiesContent = `${propertiesContent}\n${ctx.input.values.additionalProperties}`;
+              fs.writeFileSync(propertiesPath, `${updatedPropertiesContent}`);
+            }
         });
       });
     },
@@ -72,6 +81,7 @@ export const createQuarkusApp = () => {
           extensions: z.array(z.string()).optional().describe('The extensions'),
           javaVersion: z.string().optional().describe('The java version'),
           targetPath: z.string().optional().describe('The target path'),
+          additionalProperties: z.string().optional().describe('Additional properties'),
         }),
       }),
     },
@@ -97,9 +107,9 @@ export const createQuarkusApp = () => {
       .then((response) => {
         if (response.status === 200 && response.headers['content-type'] === 'application/zip') {
           const zipData = response.data;
+          const targetPath = ctx.input.targetPath ?? './';
+          const outputDir = resolveSafeChildPath(ctx.workspacePath, targetPath);
           ctx.createTemporaryDirectory().then((tempDir) => {
-            const targetPath = ctx.input.targetPath ?? './';
-            const outputDir = resolveSafeChildPath(ctx.workspacePath, targetPath);
 
             const zipFilePath = path.join(tempDir, 'downloaded.zip');
             fs.writeFileSync(zipFilePath, zipData);
@@ -128,6 +138,13 @@ export const createQuarkusApp = () => {
               }
             });
           });
+          // If present, append additional properties to src/main/resources/application.properties
+          if (ctx.input.values.additionalProperties) {
+            const propertiesPath = path.join(outputDir, 'src/main/resources/application.properties');
+            const propertiesContent = fs.readFileSync(propertiesPath, 'utf8');
+            const updatedPropertiesContent = `${propertiesContent}\n${ctx.input.values.additionalProperties}`;
+            fs.writeFileSync(propertiesPath, `${updatedPropertiesContent}`);
+          }
         } 
       }) .catch((error) => {
         console.error('Error making HTTP POST request:', error);
