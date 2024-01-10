@@ -92,7 +92,11 @@ catalog:
       rules:
         - allow: [User, Group]
     - type: url
-      target: https://github.com/iocanel/software-templates/blob/main/showcase-templates.yaml
+      target: https://github.com/q-shift/software-templates/blob/main/showcase-templates.yaml
+      rules:
+        - allow: [Template]
+    - type: url
+      target: https://github.com/q-shift/quarkus-llm-stssc-template/blob/main/template.yaml
       rules:
         - allow: [Template]
 
