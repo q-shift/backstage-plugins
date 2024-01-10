@@ -1,0 +1,33 @@
+name: Node.js Package
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with: # get all the tags from git
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+      - name: building the plugins
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        working-directory: plugins
+        run: |
+          cd quarkus
+          yarn install --frozen-lockfile
+          cp ../../hack/.npmrc.example .npmrc
+          cp ../../hack/yarn-publish.sh publish.sh
+          ./publish.sh
+          cd ..
+          
+          cd quarkus-backend
+          yarn install --frozen-lockfile
+          cp ../../hack/.npmrc.example .npmrc
+          cp ../../hack/yarn-publish.sh publish.sh
+          ./publish.sh

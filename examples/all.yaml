@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: quarkus-demo
+  description: A collection of all Backstage entities for a Quarkus demo
+spec:
+  targets:
+    - ./entities.yaml
+    - ./org.yaml
+    - ./templates/quarkus-extensions/template.yaml
+    - ./templates/quarkus-quickstart-picker/template.yaml
