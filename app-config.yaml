@@ -96,7 +96,7 @@ catalog:
       rules:
         - allow: [Template]
     - type: url
-      target: https://github.com/q-shift/quarkus-llm-stssc-template/blob/main/template.yaml
+      target: https://github.com/iocanel/quarkus-llm-stssc-template/blob/main/template.yaml
       rules:
         - allow: [Template]
 
