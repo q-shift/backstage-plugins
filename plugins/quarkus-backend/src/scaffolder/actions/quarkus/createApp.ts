@@ -1,6 +1,5 @@
 import {createTemplateAction} from '@backstage/plugin-scaffolder-node';
 import fs from 'fs-extra';
-import {z} from 'zod';
 import {resolveSafeChildPath} from '@backstage/backend-common';
 import axios from 'axios';
 import path from 'path';

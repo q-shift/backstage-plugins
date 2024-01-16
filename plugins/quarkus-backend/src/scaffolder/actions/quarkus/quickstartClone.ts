@@ -1,6 +1,5 @@
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import fs from 'fs-extra';
-import { z } from 'zod';
 import { clone }  from 'isomorphic-git';
 import http  from 'isomorphic-git/http/node';
 import { resolveSafeChildPath } from '@backstage/backend-common';
