@@ -186,7 +186,7 @@ Here is a snippet example of code changed
 ```typescript
 import { ScmIntegrations } from '@backstage/integration';
 import {createBuiltinActions, createRouter} from '@backstage/plugin-scaffolder-backend';
-import { cloneQuarkusQuickstart } from '@internal/plugin-quarkus-backend';
+import { cloneQuarkusQuickstart } from '@qshift/plugin-quarkus-backend';
 ...
   const integrations = ScmIntegrations.fromConfig(env.config);
 
@@ -240,7 +240,7 @@ Here is a snippet example of code changed
 ```typescript
 import { ScmIntegrations } from '@backstage/integration';
 import {createBuiltinActions, createRouter} from '@backstage/plugin-scaffolder-backend';
-import { createQuarkusApp } from '@internal/plugin-quarkus-backend';
+import { createQuarkusApp } from '@qshift/plugin-quarkus-backend';
 ...
   const integrations = ScmIntegrations.fromConfig(env.config);
 
