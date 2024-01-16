@@ -13,22 +13,63 @@ export const cloneQuarkusQuickstart = () => {
     id: 'quarkus:quickstart:clone',
     description: 'Clones a Quarkus quickstart project from: https://github.com/quarkusio/quarkus-quickstarts',
     examples,
-    schema: {
-      input: z.object({
-        values: z.object({
-          groupId: z.string().optional().describe('The groupId'),
-          artifactId: z.string().optional().describe('The artifactId'),
-          version: z.string().optional().describe('The version'),
-          quickstartName: z.string().describe('The name of the quickstart'),
-          targetPath: z.string().optional().describe('The target path'),
-          additionalProperties: z.string().optional().describe('Additional properties'),
-          database: z.string().optional().describe('The database to use'),
-          infoEndpoint: z.boolean().optional().describe('The info endpoint'),
-          healthEndpoint: z.boolean().optional().describe('The health endpoint'),
-          metricsEndpoint: z.boolean().optional().describe('The metrics endpoint'),
-        }),
-      }),
-    },
+      schema: {
+          input: {
+              type: 'object',
+              properties: {
+                  groupId: {
+                      title: 'groupId',
+                      description: 'The maven groupId',
+                      type: 'string'
+                  },
+                  artifactId: {
+                      title: 'artifactId',
+                      description: 'The maven artifactId',
+                      type: 'string'
+                  },
+                  version: {
+                      title: 'version',
+                      description: 'The maven version',
+                      type: 'string'
+                  },
+                  targetPath: {
+                      title: 'targetPath',
+                      description: 'The targetPath under the workspace',
+                      type: 'string'
+                  },
+                  additionalProperties: {
+                      title: 'additionalProperties',
+                      description: 'Quarkus properties to be added to src/main/resources/application.properties',
+                      type: 'string'
+                  },
+                  quickstartName: {
+                      title: 'quickstartName',
+                      description: 'The name of the quickstart github project to be cloned',
+                      type: 'string'
+                  },
+                  database: {
+                      title: 'database',
+                      description: 'The backend database to be connected for Hibernate, Panache, JPA, etc extensions',
+                      type: 'string'
+                  },
+                  infoEndpoint: {
+                      title: 'infoEndpoint',
+                      description: 'The information endpoint',
+                      type: 'boolean'
+                  },
+                  healthEndpoint: {
+                      title: 'healthEndpoint',
+                      description: 'The health endpoint',
+                      type: 'boolean'
+                  },
+                  metricsEndpoint: {
+                      title: 'metricsEndpoint',
+                      description: 'The metrics endpoint',
+                      type: 'boolean'
+                  },
+              },
+          },
+      },
 
     async handler(ctx) {
       const targetPath = ctx.input.values.targetPath ?? './';
