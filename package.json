@@ -6,14 +6,15 @@
     "node": "18 || 20"
   },
   "scripts": {
-    "build": "backstage-cli package build",
-    "lint": "backstage-cli package lint",
-    "build:all": "backstage-cli repo build --all",
-    "tsc": "tsc",
-    "clean": "backstage-cli repo clean"
+    "build": "turbo run build",
+    "clean": "turbo run clean",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "tsc": "turbo run tsc"
   },
   "devDependencies": {
     "@backstage/cli": "^0.25.0",
+    "turbo": "^1.10.4",
     "typescript": "~5.2.0"
   },
   "workspaces": {
