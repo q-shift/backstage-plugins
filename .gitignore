@@ -12,16 +12,17 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# Yarn
+# Yarn, tsc, node or turbo
 yarn.lock
-package-lock.json
-*.tsbuildinfo
-
-# NodeJS Dependencies
-**/node_modules
-**/dist
-**/dist-types
 **/yarn.lock
 
-# Node version directives
 .nvmrc
+**/node_modules
+
+package-lock.json
+
+*.tsbuildinfo
+**/dist
+**/dist-types
+
+.turbo
