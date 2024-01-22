@@ -14,12 +14,17 @@ lerna-debug.log*
 package.json-prepack
 
 # Yarn
-*.tsbuildinfo
-.turbo
-
-**/node_modules
-**/dist
-**/dist-types
+yarn.lock
 **/yarn.lock
 
-# Node version directives
+# Typescript
+**/dist
+**/dist-types
+*.tsbuildinfo
+
+# Turbo caching
+.turbo
+
+# npm
+**/node_modules
+package-lock.json
