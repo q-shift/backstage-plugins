@@ -126,8 +126,8 @@ spec:
 When done, you will be able to create a new Quarkus project from the quickstart selected.
 
 Quarkus Quickstart Picker - default (field):
-![quickstart-1.png](plugins%2Fquarkus%2Fdoc%2Fquickstart-1.png)
+![quickstart-1.png](plugins/quarkus/doc/quickstart-1.png)
 
 Quarkus Quickstart Picker - select (field):
-![quickstart-2.png](plugins%2Fquarkus-backend%2Fdoc%2Fquickstart-2.png)TODO
+![quickstart-2.png](plugins/quarkus/doc/quickstart-2.png)
 
