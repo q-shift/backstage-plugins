@@ -135,7 +135,7 @@ const Listbox = styled.ul`
     }
 `;
 
-export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData }: FieldProps<string[]>) => {
+export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData, uiSchema }: FieldProps<string[]>) => {
     const {
         getRootProps,
         getInputLabelProps,
@@ -148,15 +148,14 @@ export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData 
         focused,
         setAnchorEl,
     } = useAutocomplete({
-        id: 'customized-hook-demo',
+        id: 'quarkus-extension-list',
         // TODO: Check if the code change does not break the logic of the plugin
-        defaultValue: [quarkusExtensions[1]],
+        defaultValue: quarkusExtensions && quarkusExtensions.length > 0 ? [quarkusExtensions[0].name] : [],
         multiple: true,
         options: quarkusExtensions,
         getOptionLabel: (option: {id: string, name: string}) => option.id,
     });
 
-    const apiUrl = 'https://code.quarkus.io/api/extensions'
     const headers = {
         'Content-Type': 'application/json', // Adjust as needed
         'Access-Control-Allow-Origin' : '*',
@@ -165,13 +164,31 @@ export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData 
     const axiosRequestConfig: AxiosRequestConfig = {
         headers: headers
     };
+
+  const codeQuarkusUrl = uiSchema['ui:options']?.codeQuarkusUrl ?? 'https://stage.code.quarkus.io';
+  const apiUrl = codeQuarkusUrl + '/api/extensions'
+  const filter = uiSchema['ui:options']?.filter ?? {};
+  const filteredExtensions = filter?.extensions ?? [];
+  const filteredCategories = filter?.categories ?? [];
+  const filteredKeywords = filter?.keywords ?? [];
+
+  const filterExtension = (e: QuarkusExtensionType) => {
+          const matchingCateogory = !filteredCategories || filteredCategories.length == 0 || filteredCategories.some(regex => !e.category || e.category.match(regex));
+          const matchingName = !filteredExtensions || filteredExtensions.length == 0 || filteredExtensions.some(regex => e.id.match(regex));
+          const matchingKeywords = !filteredKeywords || filteredKeywords.length == 0 || filteredKeywords.some(regex => !e.keywords || e.keywords.some(keyword => keyword.match(regex)));
+          return matchingCateogory && matchingKeywords && matchingName;
+  }
+
     // Download the Component list
     useEffect(() => {
         axios.get(apiUrl, axiosRequestConfig).then((response) => {
             response.data.forEach((e: QuarkusExtensionType) => {
-                console.log(e)
-                quarkusExtensions.push({ id: e.id, name: e.name })
+                if (filterExtension(e)) {
+                  quarkusExtensions.push({ id: e.id, name: e.name })
+                }
             })
+        }).catch((error) => {
+            console.log('Error fetching Quarkus Extensions:', error); 
         })
     }, []);
 
@@ -219,14 +236,10 @@ interface QuarkusExtensionType {
     id: string
     name: string;
     description?: string;
+    category?: string;
+    keywords?: string[];
 }
 
-const quarkusExtensions: QuarkusExtensionType[] = [
-    { id: 'quarkus-resteasy-reactive', name: 'Quarkus Resteasy Reactive' },
-    { id: 'quarkus-resteasy-reactive-jackson', name: 'Quarkus Resteasy Reactive Jackson' },
-    { id: 'quarkus-container-image-docker', name: 'Quarkus Container Image Docker' },
-    { id: 'quarkus-kubernetes', name: 'Quarkus Kubernetes' },
-    { id: 'quarkus-openshift', name: 'Quarkus OpenShift' },
-];
 
+const quarkusExtensions: QuarkusExtensionType[] = [];
 export default QuarkusExtensionList;
