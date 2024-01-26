@@ -150,7 +150,7 @@ export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData,
     } = useAutocomplete({
         id: 'quarkus-extension-list',
         // TODO: Check if the code change does not break the logic of the plugin
-        defaultValue: quarkusExtensions && quarkusExtensions.length > 0 ? [quarkusExtensions[0].name] : [],
+        defaultValue: quarkusExtensions && quarkusExtensions.length > 0 ? [{ id: quarkusExtensions[0].id, name: quarkusExtensions[0].name }] : [],
         multiple: true,
         options: quarkusExtensions,
         getOptionLabel: (option: {id: string, name: string}) => option.id,
@@ -165,12 +165,12 @@ export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData,
         headers: headers
     };
 
-  const codeQuarkusUrl = uiSchema['ui:options']?.codeQuarkusUrl ?? 'https://stage.code.quarkus.io';
+  const codeQuarkusUrl = uiSchema && uiSchema['ui:options']?uiSchema['ui:options']?.codeQuarkusUrl : 'https://stage.code.quarkus.io';
   const apiUrl = codeQuarkusUrl + '/api/extensions'
-  const filter = uiSchema['ui:options']?.filter ?? {};
-  const filteredExtensions = filter?.extensions ?? [];
-  const filteredCategories = filter?.categories ?? [];
-  const filteredKeywords = filter?.keywords ?? [];
+  const filter = (uiSchema ?? {})['ui:options']?.filter ?? {};
+  const filteredExtensions = (filter as { extensions?: string[] })?.extensions ?? [];
+  const filteredCategories = (filter as { categories?: string[] })?.categories ?? [];
+  const filteredKeywords = (filter as { keywords?: string[] })?.keywords ?? [];
 
   const filterExtension = (e: QuarkusExtensionType) => {
           const matchingCateogory = !filteredCategories || filteredCategories.length == 0 || filteredCategories.some(regex => !e.category || e.category.match(regex));
