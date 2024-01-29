@@ -22,13 +22,15 @@ jobs:
 
       - name: Verify dist files generated (*.d.ts)
         run: |
-          ls -la plugins/*/dist  
+          ls -la plugins/*/dist
+
+      - name: 'Login to npmjs npm repo .npmrc'
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }} >> .npmrc
+          echo "always-auth = true" >> .npmrc
 
       # Publishes current version of packages that are not already present in the registry
       - name: publish
         run: |
-          yarn config set -H 'npmAuthToken' "${{secrets.NPM_TOKEN}}"
           yarn workspace @qshift/plugin-quarkus run npm publish --registry https://registry.npmjs.org/ --access public --tag latest
           yarn workspace @qshift/plugin-quarkus-backend run npm publish --registry https://registry.npmjs.org/ --access public --tag latest
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
