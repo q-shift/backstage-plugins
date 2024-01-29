@@ -85,13 +85,29 @@ export const createQuarkusApp = () => {
 
         async handler(ctx) {
             const apiUrl = 'https://code.quarkus.io/api/download'; // Replace with your API endpoint
+            const allExtensions = ctx.input.values.extensions ? ctx.input.values.extensions : [];
+            if (ctx.input.values.infoEndpoint) {
+                allExtensions.push('quarkus-info');
+            }
+            if (ctx.input.values.metricsEndpoint) {
+                allExtensions.push('quarkus-micrometer');
+                allExtensions.push('quarkus-micrometer-registry-prometheus');
+            }
+
+            if (ctx.input.values.healthEndpoint) {
+                allExtensions.push('quarkus-smallrye-health');
+            }
+
+            if (ctx.input.values.database && ctx.input.values.database !== 'none') {
+                allExtensions.push(ctx.input.values.database);
+            }
             const postData = {
                 groupId: ctx.input.values.groupId ? ctx.input.values.groupId : 'org.amce',
                 artifactId: ctx.input.values.artifactId ? ctx.input.values.artifactId : 'code-with-quarkus',
                 version: ctx.input.values.version ? ctx.input.values.version : '1.0.0-SNAPSHOT',
                 buildTool: ctx.input.values.buildTool ? ctx.input.values.buildTool : 'MAVEN',
                 javaVersion: ctx.input.values.javaVersion ? ctx.input.values.javaVersion : '11',
-                extensions: ctx.input.values.extensions ? ctx.input.values.extensions : [],
+                extensions: allExtensions,
                 database: ctx.input.values.database ? ctx.input.values.database : 'PostgreSQL',
                 infoEndpoint: ctx.input.values.infoEndpoint ? ctx.input.values.infoEndpoint : 'true',
                 healthEndpoint: ctx.input.values.healthEndpoint ? ctx.input.values.healthEndpoint : 'true',
