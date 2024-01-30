@@ -26,7 +26,7 @@ jobs:
 
       - name: 'Login to npmjs npm repo .npmrc'
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }} >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
           echo "always-auth = true" >> .npmrc
 
       # Publishes current version of packages that are not already present in the registry
