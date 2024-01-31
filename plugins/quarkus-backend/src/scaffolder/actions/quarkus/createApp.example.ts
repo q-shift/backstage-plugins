@@ -3,7 +3,7 @@ import yaml from 'yaml';
 
 export const examples: TemplateExample[] = [
     {
-        description: 'Clones a Quarkus quickstart project from GitHub',
+        description: 'Generate a quarkus application using code.quarkus.io',
         example: yaml.stringify({
             steps: [
                 {
@@ -18,7 +18,8 @@ export const examples: TemplateExample[] = [
                             javaVersion: '11',
                             buildTool: 'MAVEN',
                             quickstartName: 'quarkus-getting-started',
-                            extensions: ['quarkus-resteasy-reactive-jackson', 'quarkus-kubernetes', 'io.quarkus:quarkus-hibernate-orm-panache']
+                            extensions: ['quarkus-resteasy-reactive-jackson', 'quarkus-kubernetes', 'io.quarkus:quarkus-hibernate-orm-panache'],
+                            noCode: 'true'
                         },
                     },
                 },

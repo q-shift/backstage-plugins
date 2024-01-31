@@ -79,6 +79,11 @@ export const createQuarkusApp = () => {
                         description: 'The metrics endpoint',
                         type: 'boolean'
                     },
+                    noCode: {
+                        title: 'noCode',
+                        description: 'Starter code',
+                        type: 'boolean'
+                    }
                 },
             },
         },
@@ -102,16 +107,13 @@ export const createQuarkusApp = () => {
                 allExtensions.push(ctx.input.values.database);
             }
             const postData = {
-                groupId: ctx.input.values.groupId ? ctx.input.values.groupId : 'org.amce',
+                groupId: ctx.input.values.groupId ? ctx.input.values.groupId : 'org.acme',
                 artifactId: ctx.input.values.artifactId ? ctx.input.values.artifactId : 'code-with-quarkus',
                 version: ctx.input.values.version ? ctx.input.values.version : '1.0.0-SNAPSHOT',
                 buildTool: ctx.input.values.buildTool ? ctx.input.values.buildTool : 'MAVEN',
                 javaVersion: ctx.input.values.javaVersion ? ctx.input.values.javaVersion : '11',
                 extensions: allExtensions,
-                database: ctx.input.values.database ? ctx.input.values.database : 'PostgreSQL',
-                infoEndpoint: ctx.input.values.infoEndpoint ? ctx.input.values.infoEndpoint : 'true',
-                healthEndpoint: ctx.input.values.healthEndpoint ? ctx.input.values.healthEndpoint : 'true',
-                metricsEndpoint: ctx.input.values.metricsEndpoint ? ctx.input.values.metricsEndpoint : 'true',
+                noCode: ctx.input.values.noCode ? ctx.input.values.noCode : 'true'
             };
 
             const appDirName = ctx.input.values.artifactId ? ctx.input.values.artifactId : 'code-with-quarkus';
