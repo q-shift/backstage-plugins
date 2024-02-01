@@ -19,7 +19,7 @@ export const examples: TemplateExample[] = [
                             buildTool: 'MAVEN',
                             quickstartName: 'quarkus-getting-started',
                             extensions: ['quarkus-resteasy-reactive-jackson', 'quarkus-kubernetes', 'io.quarkus:quarkus-hibernate-orm-panache'],
-                            noCode: 'true'
+                            starterCode: 'true'
                         },
                     },
                 },
