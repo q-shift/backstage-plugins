@@ -79,9 +79,9 @@ export const createQuarkusApp = () => {
                         description: 'The metrics endpoint',
                         type: 'boolean'
                     },
-                    noCode: {
-                        title: 'noCode',
-                        description: 'Starter code',
+                    starterCode: {
+                        title: 'starterCode',
+                        description: 'Generate for the project some code to start ?',
                         type: 'boolean'
                     }
                 },
@@ -91,6 +91,8 @@ export const createQuarkusApp = () => {
         async handler(ctx) {
             const apiUrl = 'https://code.quarkus.io/api/download'; // Replace with your API endpoint
             const allExtensions = ctx.input.values.extensions ? ctx.input.values.extensions : [];
+            let noCode: string = "false";
+
             if (ctx.input.values.infoEndpoint) {
                 allExtensions.push('quarkus-info');
             }
@@ -106,6 +108,11 @@ export const createQuarkusApp = () => {
             if (ctx.input.values.database && ctx.input.values.database !== 'none') {
                 allExtensions.push(ctx.input.values.database);
             }
+            // If the starterCode is true, then the value passed to "noCode" will be "false"
+            // to generate the starter code, otherwise "noCode" will be equal to "true"
+            if (! ctx.input.values.starterCode) {
+                noCode = "true";
+            }
             const postData = {
                 groupId: ctx.input.values.groupId ? ctx.input.values.groupId : 'org.acme',
                 artifactId: ctx.input.values.artifactId ? ctx.input.values.artifactId : 'code-with-quarkus',
@@ -113,7 +120,7 @@ export const createQuarkusApp = () => {
                 buildTool: ctx.input.values.buildTool ? ctx.input.values.buildTool : 'MAVEN',
                 javaVersion: ctx.input.values.javaVersion ? ctx.input.values.javaVersion : '11',
                 extensions: allExtensions,
-                noCode: ctx.input.values.noCode ? ctx.input.values.noCode : 'true'
+                noCode: noCode
             };
 
             const appDirName = ctx.input.values.artifactId ? ctx.input.values.artifactId : 'code-with-quarkus';
