@@ -72,8 +72,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: quarkus-wizzard
-  title: Create a Quarkus Application Wizzard
-  description: Create a Quarkus App using a wizzard
+  title: Create a Quarkus Application
+  description: Create a Quarkus application using code generator "code.quarkus.io"
   tags:
     - quarkus
     - java
@@ -129,9 +129,9 @@ Update the existing `examples/template/template.yaml` file locally to use extens
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: quarkus-wizzard
-  title: Create a Quarkus Application Wizzard
-  description: Create a Quarkus App using a wizzard
+  name: quarkus-quickstart
+  title: Create a Quarkus Application from a Quickstart
+  description: Create a Quarkus Application from one of the Quickstarts you can find on "https://github.com/quarkusio/quarkus-quickstarts"
   tags:
     - quarkus
     - java
@@ -205,17 +205,13 @@ import { cloneQuarkusQuickstart } from '@qshift/plugin-quarkus-backend';
 
 The following table details the fields that you can use to use this action:
 
-| Input               | Description                                   | Type          | Required |
-|---------------------|-----------------------------------------------|---------------|----------|
-| quickstartName      | The name of the quickstart project to be used | string        | Yes      |
-| groupId             | Maven GroupID                                     | No    |
-| artifactId          | Maven ArtifactID                                  | No    |
-| targetPath          | Target Path to access the code within the workspace | No    |
-| additionalProperties | Quarkus properties                                | No    |
-| database            | Quarkus backend database (PostgreSQL, etc)        | No    |
-| infoEndpoint        | Quarkus API endpoint                              | No    |
-| healthEndpoint      | Kubernetes Health ednpoint                        | No    |
-| metricsEndpoint     | Enpoint exposing the Quarkus metrics              | No    |
+| Input                | Description                                                     | Type    | Required |
+|----------------------|-----------------------------------------------------------------|---------|----------|
+| quickstartName       | The name of the quickstart project to be used                   | string  | Yes      |
+| groupId              | Maven GroupID                                                   | string  | No       |
+| artifactId           | Maven ArtifactID                                                | string  | No       |
+| version              | Maven Version                                                   | string  | No       |
+| additionalProperties | Quarkus properties                                              | string  | No       |
 
 Example of action:
 ```yaml
@@ -256,24 +252,24 @@ import { createQuarkusApp } from '@qshift/plugin-quarkus-backend';
   return await createRouter({
     actions,
 ```
-The following table details the fields that you can use to use this action:
+The following table details the fields that you can use with this action:
 
-| Input                | Description                                                     | Type    | Required |
-|----------------------|-----------------------------------------------------------------|---------|----------|
-| quickstartName       | The name of the quickstart project to be used                   | string  | Yes      |
-| groupId              | Maven GroupID                                                   | string  | No       |
-| artifactId           | Maven ArtifactID                                                | string  | No       |
-| version              | Maven Version                                                   | string  | No       |
+| Input                | Description                                                      | Type    | Required |
+|----------------------|------------------------------------------------------------------|---------|----------|
+| groupId              | Maven GroupID                                                    | string  | No       |
+| artifactId           | Maven ArtifactID                                                 | string  | No       |
+| version              | Maven Version                                                    | string  | No       |
 | buildTool            | Tool to be used to build: 'MAVEN', 'GRADLE', 'GRADLE_KOTLIN_DSL' | string  | No       |
-| extensions           | List of the Quarkus extensions                                  | array   | No       |
-| javaVersion          | JDK version                                                     | string  | No       |
-| starterCode          | Generate for the project some code to start ?                   | boolean | No       |
-| targetPath           | Target Path to access the code within the workspace             | string  | No       |
-| additionalProperties | Quarkus properties                                              | string  | No       |
-| database             | Quarkus backend database (PostgreSQL, etc)                      | string  | No       |
-| infoEndpoint         | Has a Quarkus API endpoint ?                                    | boolean | No       |
-| healthEndpoint       | Has a Kubernetes Health endpoint ?                              | boolean | No       |
-| metricsEndpoint      | Has a Quarkus metrics endpoint ?                                | boolean | No       |
+| extensions           | List of the Quarkus extensions                                   | array   | No       |
+| javaVersion          | JDK version                                                      | string  | No       |
+| starterCode          | Generate for the project some code to start ?                    | boolean | No       |
+| targetPath           | Target Path to access the code within the workspace              | string  | No       |
+| additionalProperties | Quarkus properties                                               | string  | No       |
+| database             | Quarkus backend database (PostgreSQL, etc)                       | string  | No       |
+| infoEndpoint         | Has a Quarkus API endpoint ?                                     | boolean | No       |
+| healthEndpoint       | Has a Kubernetes Health endpoint ?                               | boolean | No       |
+| metricsEndpoint      | Has a Quarkus metrics endpoint ?                                 | boolean | No       |
+
 
 Example of action:
 ```yaml
