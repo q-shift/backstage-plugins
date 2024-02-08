@@ -3,7 +3,7 @@
   "include": ["src", "dev"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "outDir": "../../dist-types/plugins/quarkus",
+    "outputs": ["../../dist-types/plugins/quarkus-console/**"],
     "rootDir": "."
   }
 }

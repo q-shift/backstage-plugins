@@ -1,1 +1,0 @@
-export { QuarkusConsolePage } from './QuarkusConsolePage';
