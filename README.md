@@ -34,17 +34,40 @@ Verify if the newly application created is working fine: `yarn dev`
 
 This plugin proposes different features to:
 
-- Filter, select your Quarkus extensions using the `Quarkus Extension List` field.
-- Select using the `Quarkus QuickStart Picker` one of the quickstarts available: https://github.com/quarkusio/quarkus-quickstarts
+- Filter, select your Quarkus extensions using the `Quarkus Extension List` field in a template.
+- Select using the `Quarkus QuickStart Picker` one of the quickstarts available: https://github.com/quarkusio/quarkus-quickstarts in a template
+- Show the Quarkus runtime information: cpu, memory, threads, logs as new tab in the `serviceEntityPage`
 
 **NOTE**: Such frontend feature(s) should be used with the quarkus scaffolder backend plugin (described hereafter) in order to get the generated project from https://code.quarkus.io/ as zip file !
 
-### Frontend plugin
+### Quarkus console
 
-To use the frontend components, import the needed package under the following path within an existing backstage application:
+Before to use the quarkus console, it is needed to install and configure the kubernetes plugin as [documented](https://backstage.io/docs/features/kubernetes/installation).
+
+Import first the following package within an existing backstage application:
+```bash
+yarn add --cwd packages/app "@qshift/plugin-quarkus-console"
 ```
-cd packages/app
-yarn add "@qshift/plugin-quarkus"
+Next, customize the `packages/app/src/components/catalog/EntityPage.tsx` to include a new `<EntityLayout.Route...>`:
+```typescript jsx
+import {
+    QuarkusComponentPodsTable,
+} from "@qshift/plugin-quarkus-console";
+...
+const serviceEntityPage = (
+  <EntityLayout>
+  ...
+    <EntityLayout.Route path="/quarkus" title="Quarkus">
+      <QuarkusComponentPodsTable />
+    </EntityLayout.Route>
+```
+Start backstage, register a quarkus component and open the Quarkus view.
+
+### Quarkus fields
+
+To use the quarkus fields, import first the needed package within an existing backstage application:
+```bash
+yarn add --cwd packages/app "@qshift/plugin-quarkus"
 ```
 
 Next, customize the `packages/app/src/App.tsx` file according to the field that you plan to use

@@ -1,0 +1,1 @@
+export { QuarkusConsoleFetch } from './QuarkusConsoleFetch';
