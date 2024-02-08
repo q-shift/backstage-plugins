@@ -33,4 +33,5 @@ jobs:
       - name: publish
         run: |
           yarn workspace @qshift/plugin-quarkus run npm publish --registry https://registry.npmjs.org/ --access public --tag latest
+          yarn workspace @qshift/plugin-quarkus-console run npm publish --registry https://registry.npmjs.org/ --access public --tag latest
           yarn workspace @qshift/plugin-quarkus-backend run npm publish --registry https://registry.npmjs.org/ --access public --tag latest
