@@ -1,0 +1,1 @@
+export { QuarkusIcon } from './QuarkusIcon';
