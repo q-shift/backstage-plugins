@@ -1,5 +1,5 @@
 {
-  "name": "@qshift/plugin-quarkus",
+  "name": "@qshift/plugin-quarkus-console",
   "version": "0.1.19",
   "main": "src/index.ts",
   "types": "src/index.ts",
