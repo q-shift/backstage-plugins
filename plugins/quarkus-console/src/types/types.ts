@@ -8,6 +8,7 @@ import {
   V1Service,
   V1StatefulSet,
 } from '@kubernetes/client-node';
+import {createApiRef} from "@backstage/core-plugin-api";
 
 export type GroupVersionKind = {
   kind: string;
@@ -54,3 +55,19 @@ export type K8sResourcesContextData = {
   setSelectedCluster: React.Dispatch<React.SetStateAction<number>>;
   selectedCluster?: number;
 };
+
+/**
+ * The API used by the quarkus-plugin.
+ *
+ * @public
+ */
+export interface QuarkusApi {}
+
+/**
+ * ApiRef for the QuarkusApi.
+ *
+ * @public
+ */
+export const quarkusApiRef = createApiRef<QuarkusApi>({
+  id: 'plugin.quarkus.api',
+});
