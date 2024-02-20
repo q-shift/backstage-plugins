@@ -21,10 +21,11 @@ import {createDevApp} from '@backstage/dev-utils';
 import {TestApiProvider} from "@backstage/test-utils";
 import {EntityProvider} from '@backstage/plugin-catalog-react';
 
-import {KubernetesApi, kubernetesApiRef} from "@backstage/plugin-kubernetes";
+import {KubernetesApi, kubernetesApiRef, KubernetesAuthProvidersApi} from "@backstage/plugin-kubernetes";
 
 import {mockKubernetesResponse} from '../src/__fixtures__/1-deployments';
 import {QuarkusConsolePlugin, QuarkusConsolePage} from '../src';
+import {KubernetesRequestBody} from "@backstage/plugin-kubernetes-common";
 
 
 const mockEntity: Entity = {
@@ -44,7 +45,7 @@ const mockEntity: Entity = {
     },
 };
 
-class MockKubernetesClient implements KubernetesApi {
+class MockKubernetesClient implements KubernetesApi, KubernetesAuthProvidersApi {
     readonly resources;
     constructor(fixtureData: { [resourceType: string]: any[] }) {
         this.resources = Object.entries(fixtureData).flatMap(
@@ -115,6 +116,20 @@ class MockKubernetesClient implements KubernetesApi {
                 name: 'mock-ns',
             },
         };
+    }
+
+    decorateRequestBodyForAuth(_authProvider: string, _requestBody: KubernetesRequestBody): Promise<KubernetesRequestBody> {
+        return {
+            entity: {
+                apiVersion: 'v1',
+                kind: 'service',
+                metadata: { name: 'test' },
+            },
+        };
+    }
+
+    getCredentials(_authProvider: string): Promise<{ token?: string }> {
+        return { token: 'token123456'};
     }
 
 }

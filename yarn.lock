@@ -2406,7 +2406,7 @@
     yaml "^2.0.0"
     zen-observable "^0.10.0"
 
-"@backstage/plugin-kubernetes-common@0.7.3", "@backstage/plugin-kubernetes-common@^0.7.3":
+"@backstage/plugin-kubernetes-common@0.7.3", "@backstage/plugin-kubernetes-common@^0.7.0", "@backstage/plugin-kubernetes-common@^0.7.3":
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/@backstage/plugin-kubernetes-common/-/plugin-kubernetes-common-0.7.3.tgz#d9421387109e9bfc510b0e2de3857b78ba5181ef"
   integrity sha512-5p9Tj8HjBs06cdofzkGZm4fncUGyhsKboodzK/RF47sHY8G+sAC4vUMoTlcOJczU16tC0tOeXOgkKjhVYIMWDQ==
@@ -2447,7 +2447,7 @@
     xterm-addon-attach "^0.9.0"
     xterm-addon-fit "^0.8.0"
 
-"@backstage/plugin-kubernetes@0.11.4", "@backstage/plugin-kubernetes@^0.11.4":
+"@backstage/plugin-kubernetes@0.11.4", "@backstage/plugin-kubernetes@^0.11.0":
   version "0.11.4"
   resolved "https://registry.yarnpkg.com/@backstage/plugin-kubernetes/-/plugin-kubernetes-0.11.4.tgz#7c8fca7219df57b35b1cfc94d0c1bc16d24c275f"
   integrity sha512-I/86dpa1sVH472huUt+PpJXEMRtTEqKZLJj+vYFs2a+aXOU9hWBF0fqBC+CoIaX1GLw8dCsy83jpIIzUa0PEww==
