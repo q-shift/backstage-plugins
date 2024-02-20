@@ -1,2 +1,2 @@
 export { QuarkusComponent } from './QuarkusComponent';
-export { QuarkusComponentPodsTable } from './QuarkusComponentPodsTable';
+export { QuarkusApplicationInfo } from './QuarkusApplicationInfo';
