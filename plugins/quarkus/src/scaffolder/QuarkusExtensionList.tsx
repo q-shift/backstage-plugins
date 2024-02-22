@@ -152,7 +152,7 @@ export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData,
         // TODO: Check if the code change does not break the logic of the plugin
         defaultValue: quarkusExtensions && quarkusExtensions.length > 0 ? [{ id: quarkusExtensions[0].id, name: quarkusExtensions[0].name }] : [],
         multiple: true,
-        options: quarkusExtensions.sort((a,b) => a.name.localeCompare(b.name)),
+        options: uniqueExtensions(sortExtensions(quarkusExtensions)),
         getOptionLabel: (option: {id: string, name: string}) => option.id,
     });
 
@@ -230,6 +230,15 @@ export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData,
             </div>
         </FormControl>
     );
+}
+
+function uniqueExtensions(extensions: QuarkusExtensionType[]): QuarkusExtensionType[] {
+   return extensions.filter((obj: QuarkusExtensionType, index: number, self: QuarkusExtensionType[]) =>
+       index === self.findIndex((e) => e.name === obj.name))
+}
+
+function sortExtensions(extensions: QuarkusExtensionType[]): QuarkusExtensionType[] {
+    return extensions.sort((a,b) => a.name.localeCompare(b.name))
 }
 
 interface QuarkusExtensionType {
