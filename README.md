@@ -130,6 +130,24 @@ Quarkus Extension List - Select (field):
 Quarkus Extension List - Added (field):
 ![extensions-3.png](plugins/quarkus/doc/extensions-3.png)
 
+It is also possible to filter the extensions (aka restict the list of the extensions to be used):
+```yaml
+    ui:field: QuarkusExtensionList
+    ui:options:
+      filter:
+        extensions:
+          - io.quarkus:quarkus-resteasy-reactive-jackson
+          - io.quarkus:quarkus-smallrye-openapi
+          - io.quarkus:quarkus-smallrye-graphql
+          - io.quarkus:quarkus-hibernate-orm-rest-data-panache
+```
+If you would like to use a different code generator server, set the following property
+```yaml
+    ui:field: QuarkusExtensionList
+    ui:options:
+        codeQuarkusUrl: https://staging.code.quarkus.io
+```
+
 #### Quarkus Quickstart picker field
 
 Edit the `packages/app/src/App.tsx` file to add the tag of the `<QuarkusQuickstartPickerField />`
