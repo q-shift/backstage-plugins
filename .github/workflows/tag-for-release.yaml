@@ -1,0 +1,72 @@
+name: Update version and create Release PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+
+jobs:
+  version:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+
+        - name: Setup Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version-file: "20.x"
+            cache: 'yarn'
+
+        - name: Build all plugins
+          uses: ./.github/actions/build
+          with:
+            node_version: ${{ matrix.node-version }}
+
+        - name: Verify dist files generated (*.d.ts)
+          run: |
+            ls -la plugins/*/dist
+
+        - name: Setup Git
+          run: |
+              git config user.name "${{ github.actor }}"
+              git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+
+        - name: Calculate next version
+          id: calculate_next_version
+          run: |
+            echo "version=$(npm version ${{ github.event.inputs.version_type }} --no-git-tag-version)" >> $GITHUB_OUTPUT
+
+        - name: Update package.json
+          id: update_package_json
+          run: |
+            jq '.version = "${{ steps.calculate_next_version.outputs.version }}"' package.json | sponge package.json
+            jq '.version = "${{ steps.calculate_next_version.outputs.version }}"' plugins/quarkus/package.json | sponge plugins/quarkus/package.json
+            jq '.version = "${{ steps.calculate_next_version.outputs.version }}"' plugins/quarkus-backend/package.json | sponge plugins/quarkus-backend/package.json
+            jq '.version = "${{ steps.calculate_next_version.outputs.version }}"' plugins/quarkus-console/package.json | sponge plugins/quarkus-console/package.json
+
+        - name: Create pull request for release
+          id: create_pr
+          uses: peter-evans/create-pull-request@v6
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            branch: release/${{ steps.calculate_next_version.outputs.version }}
+            title: "Release: ${{ steps.calculate_next_version.outputs.version }}"
+            body: |
+              Pull request for release ${{ steps.calculate_next_version.outputs.version }}.
+
+              This pull request contains all the `package.json` files updated with the new release version
+
+                * `package.json`
+                * `plugins/quarkus/package.json`
+                * `plugins/quarkus-backend/package.json`
+                * `plugins/quarkus-console/package.json`
+            base: main

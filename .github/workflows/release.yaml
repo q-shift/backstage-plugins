@@ -1,0 +1,61 @@
+name: Tag and Release Workflow
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: startsWith(github.event.pull_request.title, 'Release:')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "20.x"
+          cache: 'yarn'
+
+      - name: Build all plugins
+        uses: ./.github/actions/build
+        with:
+          node_version: ${{ matrix.node-version }}
+
+      - name: Verify dist files generated (*.d.ts)
+        run: |
+          ls -la plugins/*/dist
+
+      - name: Setup Git
+        run: |
+            git config user.name "${{ github.actor }}"
+            git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+
+      - name: Get version number
+        id: get_version_number
+        run: |
+          echo "Current git branch is: $(git branch --show-current)"
+          git pull
+          echo "version=v$(npm pkg get version | tr -d '\"')" >> $GITHUB_OUTPUT
+
+      - name: Tag the commit
+        run: |
+          release_version=${{ steps.get_version_number.outputs.version }}
+          echo "Release version is: $release_version"
+          git tag -a "$release_version" -m "Version $release_version"
+          git push --follow-tags
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get_version_number.outputs.version }}
+          release_name: Release ${{ steps.get_version_number.outputs.version }}
+          body: |
+            Release ${{ steps.get_version_number.outputs.version }}
+          draft: false
+          prerelease: false
