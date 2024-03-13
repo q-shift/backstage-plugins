@@ -45,6 +45,14 @@ jobs:
           run: |
             echo "version=$(npm version ${{ github.event.inputs.version_type }} --no-git-tag-version)" >> $GITHUB_OUTPUT
 
+        - name: Check if version already exists
+          run: |
+            VERSION_EXISTS=$(yarn info -s --json @qshift/plugin-quarkus | jq --arg lib_version ${{ steps.calculate_next_version.outputs.version }} '.data.versions | index($lib_version)')
+            if [ $VERSION_EXISTS != "null" ]; then
+              echo "::error ::Version $VERSION_EXISTS already exists."
+              exit 1
+            fi
+
         - name: Update package.json
           id: update_package_json
           run: |
