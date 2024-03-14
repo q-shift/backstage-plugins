@@ -52,7 +52,11 @@ const ApplicationInfoCard = () => {
   useEffect(() => {
     if (!watchResourcesData) {
       return;
-    } 
+    }
+
+    if (!K8sResourcesContext) {
+      return;
+    }
 
     const componentName = currentPageLocation.pathname.split("/")[4];
     const k8sResources: K8sWorkloadResource[] | undefined = watchResourcesData?.pods?.data;
@@ -92,7 +96,7 @@ const ApplicationInfoCard = () => {
   useEffect(() => {
     switch (framework) {
       case "quarkus":
-        setFrameworkUrl("https://quarkus.io/");
+        setFrameworkUrl("https://quarkus.iooooooooooo/");
         break;
       default:
       setFrameworkUrl("");
