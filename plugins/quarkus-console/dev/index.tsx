@@ -28,10 +28,11 @@ const mockEntity: Entity = {
 };
 
 class MockKubernetesAuthProvidersApi implements KubernetesAuthProvidersApi {
-    decorateRequestBodyForAuth(authProvider: string, requestBody: KubernetesRequestBody): Promise<KubernetesRequestBody> {
+    decorateRequestBodyForAuth(_authProvider: string, _requestBody: KubernetesRequestBody): Promise<KubernetesRequestBody> {
+
         throw new Error('Method not implemented.');
     }
-    getCredentials(authProvider: string): Promise<{ token?: string | undefined; }> {
+    getCredentials(_authProvider: string): Promise<{ token?: string | undefined; }> {
         throw new Error('Method not implemented.');
     }
 
