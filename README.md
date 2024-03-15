@@ -74,6 +74,8 @@ Next, customize the `packages/app/src/App.tsx` file according to the field that 
 
 #### Quarkus extensions field
 
+This field allows a user to pick up Quarkus extension(s) from the code generator server.
+
 Edit the `packages/app/src/App.tsx` file to add the tag of the `<QuarkusExtensionListField />`
 within the tag `<Route path="/create" element={<ScaffolderPage />}>` as described hereafter.
 
@@ -130,7 +132,27 @@ Quarkus Extension List - Select (field):
 Quarkus Extension List - Added (field):
 ![extensions-3.png](plugins/quarkus/doc/extensions-3.png)
 
+It is also possible to filter the extensions (aka restrict the list of the extensions to be used):
+```yaml
+    ui:field: QuarkusExtensionList
+    ui:options:
+      filter:
+        extensions:
+          - io.quarkus:quarkus-resteasy-reactive-jackson
+          - io.quarkus:quarkus-smallrye-openapi
+          - io.quarkus:quarkus-smallrye-graphql
+          - io.quarkus:quarkus-hibernate-orm-rest-data-panache
+```
+If you would like to use a different code generator server, set the following property
+```yaml
+    ui:field: QuarkusExtensionList
+    ui:options:
+        codeQuarkusUrl: https://staging.code.quarkus.io
+```
+
 #### Quarkus Quickstart picker field
+
+This field allows a user to pick up a Quarkus Quickstart project.
 
 Edit the `packages/app/src/App.tsx` file to add the tag of the `<QuarkusQuickstartPickerField />`
 within the `<Route path="/create" element={<ScaffolderPage />}>` as described hereafter.
