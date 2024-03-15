@@ -3,10 +3,11 @@ import {QuarkusApplicationInfo, QuarkusConsolePlugin} from '../src';
 import React from 'react';
 import {TestApiProvider} from "@backstage/test-utils";
 import {EntityProvider} from '@backstage/plugin-catalog-react';
-import {KubernetesApi, kubernetesApiRef} from "@backstage/plugin-kubernetes";
+import {KubernetesApi, kubernetesApiRef, KubernetesAuthProvidersApi} from "@backstage/plugin-kubernetes";
 import {Entity} from '@backstage/catalog-model';
 import {mockKubernetesQuarkusApplicationResponse} from '../src/__fixtures__/data-1';
-//import {kubernetesAuthProvidersApiRef} from "@backstage/plugin-kubernetes-react";
+import {kubernetesAuthProvidersApiRef} from "@backstage/plugin-kubernetes-react";
+import { KubernetesRequestBody } from '@backstage/plugin-kubernetes-common';
 
 const mockEntity: Entity = {
     apiVersion: 'backstage.io/v1alpha1',
@@ -25,6 +26,16 @@ const mockEntity: Entity = {
         owner: 'user:guest',
     },
 };
+
+class MockKubernetesAuthProvidersApi implements KubernetesAuthProvidersApi {
+    decorateRequestBodyForAuth(authProvider: string, requestBody: KubernetesRequestBody): Promise<KubernetesRequestBody> {
+        throw new Error('Method not implemented.');
+    }
+    getCredentials(authProvider: string): Promise<{ token?: string | undefined; }> {
+        throw new Error('Method not implemented.');
+    }
+
+}
 
 class MockKubernetesClient implements KubernetesApi {
     readonly resources;
@@ -125,6 +136,7 @@ createDevApp()
             <TestApiProvider
                 apis={[
                     [kubernetesApiRef, new MockKubernetesClient(mockKubernetesQuarkusApplicationResponse)],
+                    [kubernetesAuthProvidersApiRef, new MockKubernetesAuthProvidersApi()]
                 ]}
             >
                 <EntityProvider entity={mockEntity}>
