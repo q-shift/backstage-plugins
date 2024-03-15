@@ -3,32 +3,47 @@ import {useEffect, useState} from "react";
 import {Autocomplete} from "@material-ui/lab";
 import {TextField} from "@material-ui/core";
 
-export interface Platform {
-  platformKey: string;
-  name: string;
-  'current-stream-id': string // currentStreamId: string;
+/* Example returned by code.quarkus.io/api/streams
+{
+    "javaCompatibility": {
+      "recommended": 17,
+      "versions": [
+        17,
+        21
+      ]
+    },
+    "key": "io.quarkus.platform:3.8",
+    "lts": false,
+    "platformVersion": "3.8.2",
+    "quarkusCoreVersion": "3.8.2",
+    "recommended": true,
+    "status": "FINAL"
+  }
+ */
+export interface Version {
+  quarkusCoreVersion: string;
+  platformVersion: string;
+  lts: boolean;
+  recommended: boolean
+  javaCompatibility: javaCompatibility[]
 }
 
-export interface QuarkusVersion {
-  id: string;
-  lts: boolean;
+export interface javaCompatibility {
+  recommended: boolean
+  versions: string[]
 }
 
 export function QuarkusVersionList() {
-  const [platform, setPlatform] = useState<Platform[]>([]);
-  const [quarkusVersion, setQuarkusVersion] = useState<QuarkusVersion[]>([]);
-
-  const [recommendedQuarkusVersion, setRecommendedQuarkusVersion] = useState<string>();
-  const [defaultQuarkusVersion, setDefaultQuarkusVersion] = useState<QuarkusVersion>();
+  const [quarkusVersion, setQuarkusVersion] = useState<Version[]>([]);
+  const [defaultQuarkusVersion, setDefaultQuarkusVersion] = useState<Version>();
 
   const codeQuarkusUrl = 'https://code.quarkus.io';
-  const apiUrl = `${codeQuarkusUrl}/api/platforms`
+  const apiStreamsUrl = `${codeQuarkusUrl}/api/streams`
 
   const fetchData = async () => {
-    const response = await fetch(apiUrl);
+    const response = await fetch(apiStreamsUrl);
     const newData = await response.json();
-    setPlatform(newData.platforms)
-    setQuarkusVersion(newData.platforms[0].streams)
+    setQuarkusVersion(newData)
   }
 
   useEffect(() => {
@@ -36,31 +51,25 @@ export function QuarkusVersionList() {
   }, []);
 
   useEffect(() => {
-    platform.forEach(p => {
-      // console.log("Platform : " + p.name);
-      // console.log("Recommended version is: " + p["current-stream-id"]);
-      setRecommendedQuarkusVersion(p["current-stream-id"]);
-    });
-  }, [platform]);
-
-  useEffect(() => {
-    // console.log("Try to match the recommended version: " + recommendedQuarkusVersion);
-    quarkusVersion.forEach((v) => {
-      // console.log("Quarkus version: " + v.id)
-      if (v.id === recommendedQuarkusVersion) {
-        setDefaultQuarkusVersion({id: `${v.id} (RECOMMENDED)`, lts: v.lts})
-        // defaultQuarkusVersion = v
-        // console.log("Quarkus version matches the recommended !")
+    quarkusVersion.forEach(v => {
+      if (v.recommended) {
+        setDefaultQuarkusVersion({
+          platformVersion: v.platformVersion + " (RECOMMENDED)",
+          quarkusCoreVersion: v.quarkusCoreVersion,
+          lts: v.lts,
+          recommended: v.recommended,
+          javaCompatibility: v.javaCompatibility
+        })
       }
-    })
-  }, [recommendedQuarkusVersion]);
+    });
+  }, [quarkusVersion]);
 
   if (defaultQuarkusVersion) {
     return (
         <Autocomplete
             id="quarkus-versions"
             options={quarkusVersion}
-            getOptionLabel={(quarkusVersion) => quarkusVersion.id}
+            getOptionLabel={(quarkusVersion) => quarkusVersion.platformVersion}
             defaultValue={defaultQuarkusVersion}
             renderInput={(params) => (
                 <TextField
