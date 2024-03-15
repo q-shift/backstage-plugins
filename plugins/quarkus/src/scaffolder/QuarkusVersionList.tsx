@@ -1,73 +1,78 @@
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import React from 'react';
+import {useEffect, useState} from "react";
+import {Autocomplete} from "@material-ui/lab";
+import {TextField} from "@material-ui/core";
 
-export type Item = {
-  label: string;
-  value: string | number;
-};
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-  }),
-);
-
-type SelectComponentProps = {
-  value: string;
-  items: Item[];
-  label: string;
-  onChange: (value: string) => void;
-  defaultValue: string | null | undefined;
-};
-
-const renderItems = (items: Item[]) => {
-  return items.map(item => {
-    return (
-      <MenuItem value={item.value} key={item.label}>
-        {item.label}
-      </MenuItem>
-    );
-  });
-};
-
-interface QuarkusVersionType {
-  id: string
+export interface Platform {
+  platformKey: string;
+  name: string;
+  'current-stream-id': string // currentStreamId: string;
 }
 
-const QuarkusVersions: QuarkusVersionType[] = [];
-export const QuarkusVersionList = ({
-  value,
-  items,
-  label,
-  onChange,
-}: SelectComponentProps): JSX.Element => {
-  const classes = useStyles();
+export interface QuarkusVersion {
+  id: string;
+  lts: boolean;
+}
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const val = event.target.value as string;
-    onChange(val);
-  };
+export function QuarkusVersionList() {
+  const [platform, setPlatform] = useState<Platform[]>([]);
+  const [quarkusVersion, setQuarkusVersion] = useState<QuarkusVersion[]>([]);
 
-  return (
-    <FormControl
-      variant="outlined"
-      className={classes.formControl}
-      disabled={items.length === 0}
-    >
-      <InputLabel>{label}</InputLabel>
-      <Select label={label} value={value} onChange={handleChange}>
-        {renderItems(items)}
-      </Select>
-    </FormControl>
-  );
-};
+  const [recommendedQuarkusVersion, setRecommendedQuarkusVersion] = useState<string>();
+  const [defaultQuarkusVersion, setDefaultQuarkusVersion] = useState<QuarkusVersion>();
+
+  const codeQuarkusUrl = 'https://code.quarkus.io';
+  const apiUrl = `${codeQuarkusUrl}/api/platforms`
+
+  const fetchData = async () => {
+    const response = await fetch(apiUrl);
+    const newData = await response.json();
+    setPlatform(newData.platforms)
+    setQuarkusVersion(newData.platforms[0].streams)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, []);
+
+  useEffect(() => {
+    platform.forEach(p => {
+      // console.log("Platform : " + p.name);
+      // console.log("Recommended version is: " + p["current-stream-id"]);
+      setRecommendedQuarkusVersion(p["current-stream-id"]);
+    });
+  }, [platform]);
+
+  useEffect(() => {
+    // console.log("Try to match the recommended version: " + recommendedQuarkusVersion);
+    quarkusVersion.forEach((v) => {
+      // console.log("Quarkus version: " + v.id)
+      if (v.id === recommendedQuarkusVersion) {
+        setDefaultQuarkusVersion({id: `${v.id} (RECOMMENDED)`, lts: v.lts})
+        // defaultQuarkusVersion = v
+        // console.log("Quarkus version matches the recommended !")
+      }
+    })
+  }, [recommendedQuarkusVersion]);
+
+  if (defaultQuarkusVersion) {
+    return (
+        <Autocomplete
+            id="quarkus-versions"
+            options={quarkusVersion}
+            getOptionLabel={(quarkusVersion) => quarkusVersion.id}
+            defaultValue={defaultQuarkusVersion}
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    label="Select a quarkus version"
+                    size="small"
+                />
+            )}
+        />)
+  }
+
+  return (<div>Waiting to get the default Quarkus version ...</div>)
+}
+
+export default QuarkusVersionList;
