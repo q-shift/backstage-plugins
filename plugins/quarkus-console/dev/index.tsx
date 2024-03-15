@@ -27,7 +27,6 @@ import {mockKubernetesResponse} from '../src/__fixtures__/1-deployments';
 import {QuarkusConsolePlugin, QuarkusConsolePage} from '../src';
 import {KubernetesRequestBody} from "@backstage/plugin-kubernetes-common";
 
-
 const mockEntity: Entity = {
     apiVersion: 'backstage.io/v1alpha1',
     kind: 'Component',

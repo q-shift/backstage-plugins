@@ -11,7 +11,6 @@ import {
   V1Service,
   V1StatefulSet,
 } from '@kubernetes/client-node';
-import {createApiRef} from "@backstage/core-plugin-api";
 
 export type GroupVersionKind = {
   kind: string;
