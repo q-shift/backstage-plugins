@@ -57,6 +57,7 @@
     "@types/styled-components": "^5.1.34",
     "msw": "^1.0.0",
     "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "react-router-dom": "^6.22.3"
   },
   "resolutions": {
