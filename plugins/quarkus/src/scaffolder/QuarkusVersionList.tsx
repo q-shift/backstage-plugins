@@ -21,16 +21,29 @@ import {TextField} from "@material-ui/core";
   }
  */
 export interface Version {
+  key: string;
   quarkusCoreVersion: string;
   platformVersion: string;
   lts: boolean;
-  recommended: boolean
-  javaCompatibility: javaCompatibility[]
+  recommended: boolean;
+  javaCompatibility: javaCompatibility[];
+  status: string;
 }
 
 export interface javaCompatibility {
-  recommended: boolean
-  versions: string[]
+  recommended: boolean;
+  versions: string[];
+}
+
+function userLabel(v: Version) {
+  const key = v.key.split(":")
+  if (v.recommended) {
+    return `${key[1]} (RECOMMENDED)`;
+  } else if (v.status !== "FINAL") {
+    return `${key[1]} (${v.status})`;
+  } else {
+    return key[1];
+  }
 }
 
 export function QuarkusVersionList() {
@@ -53,13 +66,7 @@ export function QuarkusVersionList() {
   useEffect(() => {
     quarkusVersion.forEach(v => {
       if (v.recommended) {
-        setDefaultQuarkusVersion({
-          platformVersion: v.platformVersion + " (RECOMMENDED)",
-          quarkusCoreVersion: v.quarkusCoreVersion,
-          lts: v.lts,
-          recommended: v.recommended,
-          javaCompatibility: v.javaCompatibility
-        })
+        setDefaultQuarkusVersion({...v})
       }
     });
   }, [quarkusVersion]);
@@ -69,7 +76,8 @@ export function QuarkusVersionList() {
         <Autocomplete
             id="quarkus-versions"
             options={quarkusVersion}
-            getOptionLabel={(quarkusVersion) => quarkusVersion.platformVersion}
+            getOptionSelected={(option, value) => option.key === value.key}
+            getOptionLabel={(quarkusVersion) => userLabel(quarkusVersion)}
             defaultValue={defaultQuarkusVersion}
             renderInput={(params) => (
                 <TextField
