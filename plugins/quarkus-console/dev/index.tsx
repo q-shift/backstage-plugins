@@ -1,5 +1,5 @@
 import {createDevApp} from '@backstage/dev-utils';
-import {QuarkusApplicationInfo} from '../src';
+import {QuarkusConsolePage, QuarkusConsolePlugin} from '../src';
 import React from 'react';
 import {TestApiProvider} from "@backstage/test-utils";
 import {EntityProvider} from '@backstage/plugin-catalog-react';
@@ -7,12 +7,9 @@ import {
     EntityKubernetesContent,
     KubernetesApi,
     kubernetesApiRef,
-    KubernetesAuthProvidersApi
 } from "@backstage/plugin-kubernetes";
 import {Entity} from '@backstage/catalog-model';
 import {mockKubernetesQuarkusApplicationResponse} from '../src/__fixtures__/data-1';
-import {kubernetesAuthProvidersApiRef} from "@backstage/plugin-kubernetes-react";
-import { KubernetesRequestBody } from '@backstage/plugin-kubernetes-common';
 
 const mockEntity: Entity = {
     "apiVersion": "backstage.io/v1alpha1",
@@ -48,28 +45,15 @@ const mockEntity: Entity = {
     }
 };
 
-class MockKubernetesAuthProvidersApi implements KubernetesAuthProvidersApi {
-    decorateRequestBodyForAuth(_authProvider: string, _requestBody: KubernetesRequestBody): Promise<KubernetesRequestBody> {
-
-        throw new Error('Method not implemented.');
-    }
-    getCredentials(_authProvider: string): Promise<{ token?: string | undefined; }> {
-        throw new Error('Method not implemented.');
-    }
-
-}
-
 class MockKubernetesClient implements KubernetesApi {
     readonly resources;
 
     constructor(fixtureData: { [resourceType: string]: any[] }) {
         this.resources = Object.entries(fixtureData).flatMap(
-            ([type, resources]) => {
-                return {
-                    type: type.toLocaleLowerCase('en-US'),
-                    resources,
-                };
-            },
+            ([type, resources]) => ({
+                type: type.toLocaleLowerCase('en-US'),
+                resources,
+            }),
         );
     }
 
@@ -141,16 +125,15 @@ class MockKubernetesClient implements KubernetesApi {
 createDevApp()
     .addPage({
         title: "Quarkus application info",
-        path: "/quarkus",
+        path: "/a/b/c/my-quarkus-app",
         element: (
             <TestApiProvider
                 apis={[
                     [kubernetesApiRef, new MockKubernetesClient(mockKubernetesQuarkusApplicationResponse)],
-                    [kubernetesAuthProvidersApiRef, new MockKubernetesAuthProvidersApi()]
                 ]}
             >
                 <EntityProvider entity={mockEntity}>
-                    <QuarkusApplicationInfo />
+                    <QuarkusConsolePage />
                 </EntityProvider>
             </TestApiProvider>
         )
@@ -170,4 +153,5 @@ createDevApp()
         title: 'k8s Page',
         path: '/kubernetes',
     })
+    .registerPlugin(QuarkusConsolePlugin)
     .render();
