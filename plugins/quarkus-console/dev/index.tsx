@@ -1,5 +1,5 @@
 import {createDevApp} from '@backstage/dev-utils';
-import {QuarkusApplicationInfo, QuarkusConsolePlugin} from '../src';
+import {QuarkusApplicationInfo} from '../src';
 import React from 'react';
 import {TestApiProvider} from "@backstage/test-utils";
 import {EntityProvider} from '@backstage/plugin-catalog-react';
@@ -10,21 +10,37 @@ import {kubernetesAuthProvidersApiRef} from "@backstage/plugin-kubernetes-react"
 import { KubernetesRequestBody } from '@backstage/plugin-kubernetes-common';
 
 const mockEntity: Entity = {
-    apiVersion: 'backstage.io/v1alpha1',
-    kind: 'Component',
-    metadata: {
-        name: 'quarkus-app',
-        description: 'quarkus app',
-        annotations: {
-            'backstage.io/kubernetes-id': 'backstage',
-            'janus-idp.io/tekton': 'app',
+    "apiVersion": "backstage.io/v1alpha1",
+    "kind": "Component",
+    "metadata": {
+        "name": "my-quarkus-app",
+        "description": "A cool quarkus app",
+        "annotations": {
+            "argocd/app-name": "my-quarkus-app-bootstrap",
+            "backstage.io/kubernetes-id": "my-quarkus-app",
+            "backstage.io/source-location": "url:https://github.com/ch007m/my-quarkus-app",
+            "janus-idp.io/tekton": "my-quarkus-app",
+            "backstage.io/techdocs-ref": "dir:.",
+            "github.com/project-slug": "ch007m/",
+            "app.kubernetes.io/name": "quarkus"
         },
+        "tags": [
+            "java",
+            "quarkus"
+        ],
+        "links": [
+            {
+                "url": "https://my-quarkus-app-cmoullia.apps.qshift.snowdrop.dev/",
+                "title": "Quarkus application url",
+                "icon": "web"
+            }
+        ]
     },
-    spec: {
-        lifecycle: 'production',
-        type: 'service',
-        owner: 'user:guest',
-    },
+    "spec": {
+        "type": "service",
+        "lifecycle": "production",
+        "owner": "user:guest"
+    }
 };
 
 class MockKubernetesAuthProvidersApi implements KubernetesAuthProvidersApi {
@@ -44,17 +60,6 @@ class MockKubernetesClient implements KubernetesApi {
     constructor(fixtureData: { [resourceType: string]: any[] }) {
         this.resources = Object.entries(fixtureData).flatMap(
             ([type, resources]) => {
-                if (type === 'pipelineruns' && resources[0]?.kind === 'PipelineRun') {
-                    return {
-                        type: 'customresources',
-                        resources,
-                    };
-                } else if (type === 'taskruns' && resources[0]?.kind === 'TaskRun') {
-                    return {
-                        type: 'customresources',
-                        resources,
-                    };
-                }
                 return {
                     type: type.toLocaleLowerCase('en-US'),
                     resources,
@@ -129,7 +134,6 @@ class MockKubernetesClient implements KubernetesApi {
 }
 
 createDevApp()
-    .registerPlugin(QuarkusConsolePlugin)
     .addPage({
         title: "Quarkus application info",
         path: "/quarkus",
