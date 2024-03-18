@@ -5,7 +5,7 @@ Instructions to release and publish the project artifacts to the _npmjs.org_
 
 ## GitHub workflows
 
-The release process is implemented on 3 GitHub actions.
+The release process is implemented by 3 GitHub actions.
 
 * [Update version and create Release PR](..github/workflows/tag-for-release.yaml): create release PR with artifact updated versions.
 * [Tag and create Release](..github/workflows/`release.yaml): create release 
@@ -18,7 +18,7 @@ Manual workflow that generates a PR with the versions that will be released.
 
 **release.yaml**
 
-Upon on the merge of the release PR this workflow will be treiggered which will:
+Upon on the merge of the release PR this workflow will be triggered which will:
 
 * tag the repository with the release version
 * generate a GitHub release
