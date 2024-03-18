@@ -3,7 +3,12 @@ import {QuarkusApplicationInfo} from '../src';
 import React from 'react';
 import {TestApiProvider} from "@backstage/test-utils";
 import {EntityProvider} from '@backstage/plugin-catalog-react';
-import {KubernetesApi, kubernetesApiRef, KubernetesAuthProvidersApi} from "@backstage/plugin-kubernetes";
+import {
+    EntityKubernetesContent,
+    KubernetesApi,
+    kubernetesApiRef,
+    KubernetesAuthProvidersApi
+} from "@backstage/plugin-kubernetes";
 import {Entity} from '@backstage/catalog-model';
 import {mockKubernetesQuarkusApplicationResponse} from '../src/__fixtures__/data-1';
 import {kubernetesAuthProvidersApiRef} from "@backstage/plugin-kubernetes-react";
@@ -149,5 +154,20 @@ createDevApp()
                 </EntityProvider>
             </TestApiProvider>
         )
+    })
+    .addPage({
+        element: (
+            <TestApiProvider
+                apis={[
+                    [kubernetesApiRef, new MockKubernetesClient(mockKubernetesQuarkusApplicationResponse)],
+                ]}
+            >
+                <EntityProvider entity={mockEntity}>
+                    <EntityKubernetesContent />
+                </EntityProvider>
+            </TestApiProvider>
+        ),
+        title: 'k8s Page',
+        path: '/kubernetes',
     })
     .render();
