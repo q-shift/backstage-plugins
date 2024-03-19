@@ -14,7 +14,19 @@ The release process is implemented by 3 GitHub actions.
 
 **tag-for-release.yaml**
 
-Manual workflow that generates a PR with the versions that will be released.
+Manual workflow that generates a PR with the version that will be released.
+ This workflow will 
+ [require as input](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_dispatchinputs) 
+ the type of version that will be generated. The available choices are the following:
+
+* `major`
+* `minor`
+* `patch`
+
+The selected value will be parsed by the 
+ [`npm version` command](https://docs.npmjs.com/cli/v10/commands/npm-version) 
+ which will calculate the version number.
+
 
 **release.yaml**
 
