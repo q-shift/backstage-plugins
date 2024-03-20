@@ -281,3 +281,5 @@ const ApplicationDetailsCard = () => {
     </Card>
   );
 };
+
+export default QuarkusApplicationDetailsCard;

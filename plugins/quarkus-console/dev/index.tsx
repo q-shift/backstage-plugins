@@ -1,5 +1,6 @@
 import {createDevApp} from '@backstage/dev-utils';
-import {QuarkusConsolePage, QuarkusConsolePlugin} from '../src';
+import QuarkusPage from '../src/components/QuarkusPage';
+import { QuarkusConsolePlugin} from '../src';
 import React from 'react';
 import {TestApiProvider} from "@backstage/test-utils";
 import {EntityProvider} from '@backstage/plugin-catalog-react';
@@ -133,7 +134,7 @@ createDevApp()
                 ]}
             >
                 <EntityProvider entity={mockEntity}>
-                    <QuarkusConsolePage />
+                    <QuarkusPage />
                 </EntityProvider>
             </TestApiProvider>
         )
