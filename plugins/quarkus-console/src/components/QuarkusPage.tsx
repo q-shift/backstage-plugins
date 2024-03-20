@@ -1,9 +1,9 @@
 import React from 'react';
-import { QuarkusApplicationInfo } from './QuarkusApplicationInfo';
+import { QuarkusApplicationDetailsCard } from './QuarkusApplicationDetailsCard';
 
 export const QuarkusPage = () => {
     return (
-      <QuarkusApplicationInfo/>
+      <QuarkusApplicationDetailsCard/>
     );
 };
 
