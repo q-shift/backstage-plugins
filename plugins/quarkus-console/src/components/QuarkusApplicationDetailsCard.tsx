@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom';
 import { Box, Card, CardContent, CardHeader, CircularProgress, Typography } from '@material-ui/core';
 import Status from './ui/Status';
 
-export const QuarkusApplicationInfo = () => {
+export const QuarkusApplicationDetailsCard = () => {
   const watchedResources = [
     ModelsPlural.pods,
   ];
@@ -18,12 +18,12 @@ export const QuarkusApplicationInfo = () => {
 
   return (
     <K8sResourcesContext.Provider value={k8sResourcesContextData}>
-      <ApplicationInfoCard/>
+      <ApplicationDetailsCard/>
     </K8sResourcesContext.Provider>
   );
 };
 
-const ApplicationInfoCard = () => {
+const ApplicationDetailsCard = () => {
   const { watchResourcesData } = useContext(K8sResourcesContext);
 
   const currentPageLocation = useLocation();
