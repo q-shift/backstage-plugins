@@ -4,11 +4,12 @@ import { renderInTestApp, TestApiProvider } from "@backstage/test-utils";
 import { ScaffolderRJSFFieldProps as FieldProps } from '@backstage/plugin-scaffolder-react';
 import { CatalogApi, catalogApiRef } from '@backstage/plugin-catalog-react';
 import { Entity } from '@backstage/catalog-model';
+import {findByText} from "@testing-library/dom/types/queries";
 
 describe('<QuarkusVersionList />', () => {
     let entities: Entity[];
-    const versionLabel = '3.8 (RECOMMENDED)';
-    const shouldWaitLabel = 'Waiting to get the default Quarkus version ...';
+    const defaultVersionLabel = '3.8 (RECOMMENDED)';
+    const waitLabel = 'Waiting to get the default Quarkus version ...';
 
     // const user = userEvent.setup();
     const onChange = jest.fn();
@@ -55,8 +56,19 @@ describe('<QuarkusVersionList />', () => {
                     <QuarkusVersionList {...props}/>
                 </Wrapper>
             );
+
+            expect(rendered.getAllByText(waitLabel)).toHaveLength(1);
+        });
+
+        it('should get the default value', async () => {
+            const rendered = await renderInTestApp(
+                <Wrapper>
+                    <QuarkusVersionList {...props}/>
+                </Wrapper>
+            );
             // user.selectOptions()
-            expect(rendered.getAllByText(shouldWaitLabel)).toHaveLength(1);
+            await new Promise((r) => setTimeout(r, 2000));
+            expect(rendered.findByText(defaultVersionLabel));
         });
 
     });
