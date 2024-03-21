@@ -61,7 +61,7 @@ export const QuarkusVersionList = (props: FieldExtensionComponentProps<string>) 
 
     const [quarkusVersion, setQuarkusVersion] = useState<Version[]>([]);
     const [defaultQuarkusVersion, setDefaultQuarkusVersion] = useState<Version>();
-    const [_, setSelectedVersion] = useState<Version>();
+    const [selectedVersion, setSelectedVersion] = useState<Version>();
 
     const codeQuarkusUrl = 'https://code.quarkus.io';
     const apiStreamsUrl = `${codeQuarkusUrl}/api/streams`
@@ -112,8 +112,7 @@ export const QuarkusVersionList = (props: FieldExtensionComponentProps<string>) 
                     options={quarkusVersion}
                     getOptionSelected={(option, value) => option.key === value.key}
                     getOptionLabel={(quarkusVersion) => userLabel(quarkusVersion)}
-                    defaultValue={defaultQuarkusVersion}
-                    // value={quarkusVersion.find((v: Version) => v.key === selectedVersion?.key)}
+                    defaultValue={selectedVersion ?? defaultQuarkusVersion}
                     onChange={onSelectVersion}
                     renderInput={(params) => (
                         <TextField
