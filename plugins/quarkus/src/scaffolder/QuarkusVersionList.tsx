@@ -1,9 +1,8 @@
-import React from 'react';
-import {useEffect, useState} from "react";
-import {Autocomplete} from "@material-ui/lab";
-import {TextField} from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Autocomplete } from "@material-ui/lab";
+import { TextField } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
-import {FieldExtensionComponentProps} from "@backstage/plugin-scaffolder-react";
+import { FieldExtensionComponentProps } from "@backstage/plugin-scaffolder-react";
 
 /* Example returned by code.quarkus.io/api/streams
 {
@@ -62,6 +61,7 @@ export const QuarkusVersionList = (props: FieldExtensionComponentProps<string>) 
 
     const [quarkusVersion, setQuarkusVersion] = useState<Version[]>([]);
     const [defaultQuarkusVersion, setDefaultQuarkusVersion] = useState<Version>();
+    const [selectedVersion, setSelectedVersion] = useState<Version>();
 
     const codeQuarkusUrl = 'https://code.quarkus.io';
     const apiStreamsUrl = `${codeQuarkusUrl}/api/streams`
@@ -77,18 +77,27 @@ export const QuarkusVersionList = (props: FieldExtensionComponentProps<string>) 
     }, []);
 
     useEffect(() => {
-        quarkusVersion.forEach(v => {
-            if (v.recommended) {
-                setDefaultQuarkusVersion({...v})
-                // @ts-ignore: TS2345: Argument of type 'string[]' is not assignable to parameter of type 'string'.
-                onChange([v.key]);
-            }
-        });
+        if (!defaultQuarkusVersion) {
+            // console.log("DefaultQuarkusVersion is empty")
+            quarkusVersion.forEach((v: Version) => {
+                // console.log(`Version key: ${v.key}`);
+                if (v.recommended) {
+                    setDefaultQuarkusVersion({...v})
+                    // @ts-ignore: TS2345: Argument of type 'string[]' is not assignable to parameter of type 'string'.
+                    onChange([v.key]);
+                    // console.log(`DefaultQuarkusVersion is: ${v.key}`)
+                }
+            });
+        }
     }, [quarkusVersion]);
 
     function onSelectVersion(_: React.ChangeEvent<{}>, v: Version | null) {
-        // @ts-ignore: TS2345: Argument of type 'string[]' is not assignable to parameter of type 'string'.
-        onChange([v.key]);
+        if (v) {
+            // @ts-ignore: TS2345: Argument of type 'string[]' is not assignable to parameter of type 'string'.
+            onChange([v.key]);
+            setSelectedVersion(v);
+            // console.log(`Value selected : ${selectedVersion?.key}`)
+        }
     }
 
     if (defaultQuarkusVersion) {
@@ -103,7 +112,7 @@ export const QuarkusVersionList = (props: FieldExtensionComponentProps<string>) 
                     options={quarkusVersion}
                     getOptionSelected={(option, value) => option.key === value.key}
                     getOptionLabel={(quarkusVersion) => userLabel(quarkusVersion)}
-                    defaultValue={defaultQuarkusVersion}
+                    defaultValue={(selectedVersion ?? defaultQuarkusVersion) || null}
                     onChange={onSelectVersion}
                     renderInput={(params) => (
                         <TextField
