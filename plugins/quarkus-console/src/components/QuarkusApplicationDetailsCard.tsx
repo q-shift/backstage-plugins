@@ -5,7 +5,7 @@ import {
   V1Deployment,
 } from '@kubernetes/client-node';
 import React, { useContext, useEffect, useState } from 'react';
-import {Application, K8sWorkloadResource, Version, deploymentToApplication} from "../types/types";
+import {Application, K8sWorkloadResource, Version, deploymentToApplication} from "../types";
 import { useLocation } from 'react-router-dom';
 import { Box, Card, CardContent, CardHeader, CircularProgress, Typography } from '@material-ui/core';
 import Status from './ui/Status';

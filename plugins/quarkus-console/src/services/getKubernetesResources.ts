@@ -4,7 +4,7 @@ import {
   ClusterErrors,
   K8sResponseData,
   K8sWorkloadResource,
-} from '../types/types';
+} from '../types';
 
 export const WORKLOAD_TYPES: string[] = [
   ModelsPlural.deployments,

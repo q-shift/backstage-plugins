@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { K8sResourcesContextData } from '../types/types';
+import { K8sResourcesContextData } from '../types';
 
 export const K8sResourcesContext = React.createContext<K8sResourcesContextData>(
   { clusters: [], setSelectedCluster: () => {} },

@@ -6,7 +6,7 @@ import {
   Typography,
 } from '@mui/material';
 import { match as RMatch } from 'react-router-dom';
-import { Application } from '../types/types';
+import { Application } from '../types';
 
 import QuarkusApplicationDetailsCard from './QuarkusApplicationDetailsCard';
 import QuarkusApplicationHealthCard from './QuarkusApplicationHealthCard';

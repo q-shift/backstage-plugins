@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { useKubernetesObjects } from '@backstage/plugin-kubernetes';
 
-import { K8sResourcesContextData } from '../types/types';
+import { K8sResourcesContextData } from '../types';
 import { useAllWatchResources } from './useAllWatchResources';
 import { useK8sResourcesClusters } from './useK8sResourcesClusters';
 
