@@ -15,6 +15,11 @@ export const createQuarkusApp = () => {
             input: {
                 type: 'object',
                 properties: {
+                    quarkusVersion: {
+                        title: 'quarkusVersion',
+                        description: 'The version of the quarkus framework',
+                        type: 'string'
+                    },
                     groupId: {
                         title: 'groupId',
                         description: 'The maven groupId',
@@ -96,6 +101,7 @@ export const createQuarkusApp = () => {
             if (ctx.input.values.infoEndpoint) {
                 allExtensions.push('quarkus-info');
             }
+
             if (ctx.input.values.metricsEndpoint) {
                 allExtensions.push('quarkus-micrometer');
                 allExtensions.push('quarkus-micrometer-registry-prometheus');
@@ -114,11 +120,12 @@ export const createQuarkusApp = () => {
                 noCode = "true";
             }
             const postData = {
+                streamKey: ctx.input.values.quarkusVersion ? ctx.input.values.quarkusVersion : 'io.quarkus.platform:3.8',
                 groupId: ctx.input.values.groupId ? ctx.input.values.groupId : 'org.acme',
                 artifactId: ctx.input.values.artifactId ? ctx.input.values.artifactId : 'code-with-quarkus',
                 version: ctx.input.values.version ? ctx.input.values.version : '1.0.0-SNAPSHOT',
                 buildTool: ctx.input.values.buildTool ? ctx.input.values.buildTool : 'MAVEN',
-                javaVersion: ctx.input.values.javaVersion ? ctx.input.values.javaVersion : '11',
+                javaVersion: ctx.input.values.javaVersion ? ctx.input.values.javaVersion : '17',
                 extensions: allExtensions,
                 noCode: noCode
             };
