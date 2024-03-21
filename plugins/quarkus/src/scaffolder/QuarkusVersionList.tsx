@@ -84,7 +84,7 @@ export const QuarkusVersionList = (props: FieldExtensionComponentProps<string>) 
                 if (v.recommended) {
                     setDefaultQuarkusVersion({...v})
                     // @ts-ignore: TS2345: Argument of type 'string[]' is not assignable to parameter of type 'string'.
-                    onChange([v.key]);
+                    onChange(v.key);
                     // console.log(`DefaultQuarkusVersion is: ${v.key}`)
                 }
             });
@@ -94,7 +94,7 @@ export const QuarkusVersionList = (props: FieldExtensionComponentProps<string>) 
     function onSelectVersion(_: React.ChangeEvent<{}>, v: Version | null) {
         if (v) {
             // @ts-ignore: TS2345: Argument of type 'string[]' is not assignable to parameter of type 'string'.
-            onChange([v.key]);
+            onChange(v.key);
             setSelectedVersion(v);
             // console.log(`Value selected : ${selectedVersion?.key}`)
         }
