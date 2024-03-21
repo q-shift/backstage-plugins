@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { KubernetesObjects } from '@backstage/plugin-kubernetes';
 
-import { K8sResponseData } from '../types/types';
+import { K8sResponseData } from '../types';
 import { getK8sResources } from './getKubernetesResources';
 
 export const useAllWatchResources = (

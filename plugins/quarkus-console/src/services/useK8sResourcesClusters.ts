@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { KubernetesObjects } from '@backstage/plugin-kubernetes';
 
-import { ClusterErrors } from '../types/types';
+import { ClusterErrors } from '../types';
 import { getClusters } from './getKubernetesResources';
 
 export const useK8sResourcesClusters = (

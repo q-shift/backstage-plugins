@@ -1,4 +1,4 @@
-import { GroupVersionKind, Model } from './types/types';
+import { GroupVersionKind, Model } from './types';
 
 export const ReplicaSetGVK: GroupVersionKind = {
   apiVersion: 'v1',
