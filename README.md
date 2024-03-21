@@ -359,6 +359,7 @@ The following table details the fields that you can use with this action:
 
 | Input                | Description                                                      | Type    | Required |
 |----------------------|------------------------------------------------------------------|---------|----------|
+| quarkusVersion       | Quarkus version                                                  | string  | No       |
 | groupId              | Maven GroupID                                                    | string  | No       |
 | artifactId           | Maven ArtifactID                                                 | string  | No       |
 | version              | Maven Version                                                    | string  | No       |
@@ -379,14 +380,22 @@ Example of action:
   steps:
     - id: template
       name: Generating the Source Code Component
-      action: quarkus:quickstart:clone
+      action: quarkus:app:create
       input:
         values:
+          quarkusVersion: ${{ parameters.quarkusVersion[0] }}
           groupId: ${{ parameters.groupId }}
           artifactId: ${{ parameters.artifactId }}
           version: ${{ parameters.version }}
-          quickstartName: ${{ parameters.quickstartName }}
+          buildTool: ${{ parameters.buildTool }}
+          javaVersion: ${{ parameters.javaVersion }}
+          extensions: ${{ parameters.extensions }}
+          database: ${{ parameters.database }}
+          infoEndpoint: ${{ parameters.infoEndpoint }}
+          healthEndpoint: ${{ parameters.healthEndpoint }}
+          metricsEndpoint: ${{ parameters.metricsEndpoint }}
           additionalProperties: ${{ parameters.additionalProperties }}
+          starterCode: true
 ```
 
 Enjoy !

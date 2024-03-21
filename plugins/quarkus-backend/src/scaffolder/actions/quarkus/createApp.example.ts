@@ -12,12 +12,13 @@ export const examples: TemplateExample[] = [
                     name: 'Create a Quarkus app',
                     input: {
                         values: {
+                            streamKey: 'io.quarkus.platform:3.8',
                             groupId: 'io.quarkus',
                             artifactId: 'cool-demo',
                             version: '1.0',
-                            javaVersion: '11',
                             buildTool: 'MAVEN',
-                            quickstartName: 'quarkus-getting-started',
+                            javaVersion: '17',
+                            infoEndpoint: 'true',
                             extensions: ['quarkus-resteasy-reactive-jackson', 'quarkus-kubernetes', 'io.quarkus:quarkus-hibernate-orm-panache'],
                             starterCode: 'true'
                         },
