@@ -31,3 +31,8 @@ runs:
       shell: bash
       run: |
         yarn build
+
+    - name: Test the plugins
+      shell: bash
+      run: |
+        yarn test

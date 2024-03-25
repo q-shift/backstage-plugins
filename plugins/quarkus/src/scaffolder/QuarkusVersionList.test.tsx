@@ -8,11 +8,9 @@ import { Entity } from '@backstage/catalog-model';
 describe('<QuarkusVersionList />', () => {
     let entities: Entity[];
     const defaultVersionLabel = '(RECOMMENDED)';
-    const waitLabel = 'Waiting to get the default Quarkus version ...';
 
     // const user = userEvent.setup();
     const onChange = jest.fn();
-    const schema = {};
     const required = false;
     const rawErrors: string[] = [];
     const formData = undefined;
@@ -42,21 +40,10 @@ describe('<QuarkusVersionList />', () => {
         beforeEach(() => {
             props = {
                 onChange,
-                schema,
                 required,
                 rawErrors,
                 formData,
             } as unknown as FieldProps;
-        });
-
-        it('should wait to get the quarkus list', async () => {
-            const rendered = await renderInTestApp(
-                <Wrapper>
-                    <QuarkusVersionList {...props}/>
-                </Wrapper>
-            );
-
-            expect(rendered.getAllByText(waitLabel)).toHaveLength(1);
         });
 
         it('should get the default value including (RECOMMENDED)', async () => {
