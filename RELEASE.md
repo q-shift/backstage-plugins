@@ -21,17 +21,16 @@ The release process is implemented by 3 GitHub workflows.
 Manual workflow that generates a PR with the version that will be released.
  This workflow will 
  [require as input](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_dispatchinputs) 
- the type of version that will be generated. The available choices are the following:
+ the type of version to be generated and generate a new plugin version value 
+ using the [`npm version` command](https://docs.npmjs.com/cli/v10/commands/npm-version) .
+ 
+The available choices for the `version_type` input are the following:
 
 * `major`
 * `minor`
 * `patch`
 
-The selected value will be parsed by the 
- [`npm version` command](https://docs.npmjs.com/cli/v10/commands/npm-version) 
- which will calculate the version number.
-
-Example of the changes on the version number depending on the selected input.
+These are some examples of the changes on the version number depending on the selected input.
 
 ```bash
 $ npm pkg get version
