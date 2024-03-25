@@ -19,15 +19,6 @@ jobs:
           node-version-file: "20.x"
           cache: 'yarn'
 
-      - name: Build all plugins
-        uses: ./.github/actions/build
-        with:
-          node_version: ${{ matrix.node-version }}
-
-      - name: Verify dist files generated (*.d.ts)
-        run: |
-          ls -la plugins/*/dist
-
       - name: Setup Git
         run: |
             git config user.name "${{ github.actor }}"
