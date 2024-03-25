@@ -60,10 +60,12 @@ This workflow will:
 
 **Publish packages to Node.js**
 
-Upon the creation of a GitHub release this workflow will be automatically 
- triggered. 
+> [!NOTE] 
+> Upon the creation of a GitHub release this workflow will be automatically 
+> triggered. 
 
 Automatic workflow that publishes the packages to the _npmjs.org_ registry.
 
-**NOTE**: Although this workflow can be executed manually it hasn't been 
- prepared for it yet.
+> [!WARNING] 
+> Although this workflow can be executed manually it hasn't been 
+> prepared for it yet.
