@@ -31,7 +31,7 @@ The selected value will be parsed by the
  [`npm version` command](https://docs.npmjs.com/cli/v10/commands/npm-version) 
  which will calculate the version number.
 
-Example:
+Example of the changes on the version number depending on the selected input.
 
 ```bash
 $ npm pkg get version
