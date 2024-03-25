@@ -16,7 +16,7 @@ The release process is implemented by 3 GitHub workflows.
  Publish the packages on npmjs.org.
 
 
-**Update version and create Release PR**
+### Update version and create Release PR
 
 Manual workflow that generates a PR with the version that will be released.
  This workflow will 
@@ -46,25 +46,25 @@ $ npm version major --no-git-tag-version
 v2.0.0
 ```
 
-**Tag and create Release**
 
-> [!NOTE] 
-> Upon on the merge of the release PR this workflow will be automatically 
-> triggered.
- 
-This workflow will:
+### Tag and create Release
+
+This automatic workflow will:
 
 * tag the repository with the release version
 * generate a GitHub release
   * _The GitHub release will trigger the "Publish packages to Node.js" workflow._
 
-**Publish packages to Node.js**
-
 > [!NOTE] 
-> Upon the creation of a GitHub release this workflow will be automatically 
-> triggered. 
+> This workflow will be automatically triggered upon the merge of the release PR.
+
+
+### Publish packages to Node.js
 
 Automatic workflow that publishes the packages to the _npmjs.org_ registry.
+
+> [!NOTE] 
+> This workflow will be automatically triggered upon the creation of a GitHub release. 
 
 > [!WARNING] 
 > Although this workflow can be executed manually it hasn't been 
