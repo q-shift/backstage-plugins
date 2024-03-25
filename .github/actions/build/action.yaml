@@ -12,7 +12,7 @@ runs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version-file: ${{ inputs.custom_param }}
+        node-version: ${{ inputs.node_version }}
         cache: 'yarn'
 
     - name: Setup local Turbo cache
