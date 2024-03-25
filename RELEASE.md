@@ -48,13 +48,22 @@ v2.0.0
 
 **Tag and create Release**
 
-Upon on the merge of the release PR this workflow will be triggered which will:
+> [!NOTE] 
+> Upon on the merge of the release PR this workflow will be automatically 
+> triggered.
+ 
+This workflow will:
 
 * tag the repository with the release version
 * generate a GitHub release
-* trigger the publish workflow
+  * _The GitHub release will trigger the "Publish packages to Node.js" workflow._
 
 **Publish packages to Node.js**
 
-Automatic workflow, triggered by the GitHub release, that publishes the 
- artifacts to the _npmjs.org_ registry.
+Upon the creation of a GitHub release this workflow will be automatically 
+ triggered. 
+
+Automatic workflow that publishes the packages to the _npmjs.org_ registry.
+
+**NOTE**: Although this workflow can be executed manually it hasn't been 
+ prepared for it yet.
