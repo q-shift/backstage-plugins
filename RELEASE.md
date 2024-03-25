@@ -7,13 +7,13 @@ Instructions to release and publish the project artifacts to the _npmjs.org_
 
 The release process is implemented by 3 GitHub workflows.
 
-* [Update version and create Release PR](./.github/workflows/pr-for-release.yaml): 
+* [Update version and create Release PR](#update-version-and-create-release-pr): 
  Build packages, bump the node package version to the next version and create 
- a release PR.
-* [Tag and create Release](./.github/workflows/tag-and-create-release.yaml): 
- Tag the git repository and release it.
-* [Publish packages to Node.js](./.github/workflows/npm-publish.yaml): 
- Publish the packages on npmjs.org.
+ a release PR - [`./.github/workflows/pr-for-release.yaml`](./.github/workflows/pr-for-release.yaml).
+* [Tag and create Release](#tag-and-create-release): 
+ Tag the git repository and release it - [`./.github/workflows/tag-and-create-release.yaml`](./.github/workflows/tag-and-create-release.yaml).
+* [Publish packages to Node.js](#publish-packages-to-nodejs): 
+ Publish the packages on npmjs.org - [`./.github/workflows/npm-publish.yaml`](./.github/workflows/npm-publish.yaml).
 
 
 ### Update version and create Release PR
