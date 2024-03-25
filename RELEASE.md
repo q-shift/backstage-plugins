@@ -21,8 +21,8 @@ The release process is implemented by 3 GitHub workflows.
 Manual workflow that generates a PR with the version that will be released.
  This workflow will 
  [require as input](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_dispatchinputs) 
- the type of version to be generated and generate a new plugin version value 
- using the [`npm version` command](https://docs.npmjs.com/cli/v10/commands/npm-version) .
+ the type of version to be generated and will generate a new plugin version value 
+ using the [`npm version` command](https://docs.npmjs.com/cli/v10/commands/npm-version).
  
 The available choices for the `version_type` input are the following:
 
