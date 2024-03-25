@@ -30,6 +30,9 @@ jobs:
             node-version: ${{ matrix.node-version }}
             cache: 'yarn'
 
+        - name: Install sponge tools
+          run: sudo apt-get install -y moreutils
+
         - name: Build all plugins
           uses: ./.github/actions/build
           with:
@@ -47,7 +50,7 @@ jobs:
         - name: Calculate next version
           id: calculate_next_version
           run: |
-            echo "version=$(npm version ${{ github.event.inputs.version_type }} --no-git-tag-version)" >> $GITHUB_OUTPUT
+            echo "version=$(npm version ${{ github.event.inputs.version_type }} -w @qshift/plugin-quarkus --no-git-tag-version)" >> $GITHUB_OUTPUT
 
         - name: Check if version already exists
           run: |
@@ -60,7 +63,6 @@ jobs:
         - name: Update package.json
           id: update_package_json
           run: |
-            jq '.version = "${{ steps.calculate_next_version.outputs.version }}"' package.json | sponge package.json
             jq '.version = "${{ steps.calculate_next_version.outputs.version }}"' plugins/quarkus/package.json | sponge plugins/quarkus/package.json
             jq '.version = "${{ steps.calculate_next_version.outputs.version }}"' plugins/quarkus-backend/package.json | sponge plugins/quarkus-backend/package.json
             jq '.version = "${{ steps.calculate_next_version.outputs.version }}"' plugins/quarkus-console/package.json | sponge plugins/quarkus-console/package.json
