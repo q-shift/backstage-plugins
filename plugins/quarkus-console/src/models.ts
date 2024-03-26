@@ -63,6 +63,21 @@ export const CheClusterGVK: GroupVersionKind = {
   kind: 'CheCluster',
 };
 
+export const SecretGVK: GroupVersionKind = {
+  apiVersion: 'v1',
+  kind: 'Secret',
+};
+
+export const ConfigMapGVK: GroupVersionKind = {
+  apiVersion: 'v1',
+  kind: 'ConfigMap',
+};
+
+export const PersistentVolumeClaimGVK: GroupVersionKind = {
+  apiVersion: 'v1',
+  kind: 'PersistentVolumeClaim',
+};
+
 export enum ModelsPlural {
   pods = 'pods',
   deployments = 'deployments',
@@ -74,6 +89,9 @@ export enum ModelsPlural {
   cronjobs = 'cronjobs',
   statefulsets = 'statefulsets',
   routes = 'routes',
+  configmaps = 'configmaps',
+  secrets = 'secrets',
+  persistentvolumeclaims = 'persistentvolumeclaims',
 }
 
 export const resourceGVKs: { [key: string]: GroupVersionKind } = {
@@ -87,6 +105,9 @@ export const resourceGVKs: { [key: string]: GroupVersionKind } = {
   [ModelsPlural.jobs]: JobGVK,
   [ModelsPlural.statefulsets]: StatefulSetGVK,
   [ModelsPlural.routes]: RouteGVK,
+  [ModelsPlural.configmaps]: ConfigMapGVK,
+  [ModelsPlural.secrets]: SecretGVK,
+  [ModelsPlural.persistentvolumeclaims]: PersistentVolumeClaimGVK,
 };
 
 export const DeploymentModel: Model = {
@@ -157,6 +178,27 @@ export const CheClusterModel: Model = {
   plural: 'checlusters',
 };
 
+export const ConfigMapModel: Model = {
+  ...ConfigMapGVK,
+  abbr: 'CM',
+  labelPlural: 'ConfigMaps',
+  color: '#004080',
+};
+
+export const SecretModel: Model = {
+  ...SecretGVK,
+  abbr: 'SC',
+  labelPlural: 'Secrets',
+  color: '#004080',
+};
+
+export const PersistentVolumeClaimModel: Model = {
+  ...PersistentVolumeClaimGVK,
+  abbr: 'PVC',
+  labelPlural: 'PersistentVolumeClaims',
+  color: '#004080',
+};
+
 export const resourceModels = {
   [DeploymentModel.kind]: DeploymentModel,
   [PodModel.kind]: PodModel,
@@ -168,4 +210,7 @@ export const resourceModels = {
   [JobModel.kind]: JobModel,
   [RouteModel.kind]: RouteModel,
   [CheClusterModel.kind]: CheClusterModel,
+  [ConfigMapModel.kind]: ConfigMapModel,
+  [SecretModel.kind]: SecretModel,
+  [PersistentVolumeClaimModel.kind]: PersistentVolumeClaimModel,
 };

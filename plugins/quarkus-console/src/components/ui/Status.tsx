@@ -3,7 +3,6 @@ import React from 'react';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import AccessTime from '@material-ui/icons/AccessTime';
 import HighlightOff from '@material-ui/icons/HighlightOff';
-import { Typography } from '@material-ui/core';
 
 interface StatusProps {
   title?: string;
@@ -26,7 +25,7 @@ const Status: React.FC<StatusProps> = ({ title, status }) => {
 
   return (
     <>
-      <Typography variant="h6">{title}</Typography>
+      {title}
       {renderIcon()}
     </>
   );
