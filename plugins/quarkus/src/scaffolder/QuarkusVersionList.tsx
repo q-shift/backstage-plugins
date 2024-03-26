@@ -1,8 +1,7 @@
 import React from "react";
 import FormControl from "@material-ui/core/FormControl";
-import { FieldExtensionComponentProps } from "@backstage/plugin-scaffolder-react";
-import { Progress, Select, SelectItem } from "@backstage/core-components";
-// import useAsync from 'react-use/esm/useAsync';
+import {FieldExtensionComponentProps} from "@backstage/plugin-scaffolder-react";
+import {Progress, Select, SelectItem} from "@backstage/core-components";
 import useAsync from 'react-use/lib/useAsync';
 
 /* Example returned by code.quarkus.io/api/streams
@@ -48,6 +47,16 @@ function userLabel(v: Version) {
     }
 }
 
+function findRecommendedVersion(versions: Version[]) {
+    let recommendedVersion = '';
+    versions.forEach((v: Version) => {
+        if (v.recommended) {
+            recommendedVersion = v.key
+        }
+    })
+    return recommendedVersion;
+}
+
 export const QuarkusVersionList = (props: FieldExtensionComponentProps<string>) => {
     const {
         onChange,
@@ -62,7 +71,12 @@ export const QuarkusVersionList = (props: FieldExtensionComponentProps<string>) 
     const {loading, value} = useAsync(async () => {
         const response = await fetch(apiStreamsUrl);
         const newData = await response.json();
-        formData !== undefined ? formData : onChange(newData[0].key)
+
+        const recommendedVersion = findRecommendedVersion(newData);
+        console.log(`Recommended version: ${recommendedVersion}`)
+        formData !== undefined ? formData : onChange(recommendedVersion !== '' ? recommendedVersion : newData[0].key);
+        // formData !== undefined ? formData : onChange(newData[0].key);
+
         return newData;
     });
 
