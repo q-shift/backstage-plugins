@@ -10,6 +10,9 @@ import {
   V1ReplicaSet,
   V1Service,
   V1StatefulSet,
+  V1Secret,
+  V1ConfigMap,
+  V1PersistentVolumeClaim,
 } from '@kubernetes/client-node';
 
 export type GroupVersionKind = {
@@ -35,8 +38,16 @@ export type K8sWorkloadResource =
   | V1Job
   | V1StatefulSet;
 
+export type K8sVolumeResource =
+  | V1Secret
+  | V1ConfigMap
+  | V1PersistentVolumeClaim
+
+export type K8sResource = K8sWorkloadResource | K8sVolumeResource;
+
+
 export type K8sResponseData = {
-  [key: string]: { data: K8sWorkloadResource[] };
+  [key: string]: { data: K8sResource[] };
 };
 
 export type ClusterError = {

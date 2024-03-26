@@ -1,33 +1,9 @@
-import {useK8sObjectsResponse} from '../services/useK8sObjectsResponse';
-import {K8sResourcesContext} from '../services/K8sResourcesContext';
-import {ModelsPlural} from "../models";
-import {
-  V1Deployment,
-} from '@kubernetes/client-node';
-import React, { useContext, useEffect, useState } from 'react';
-import {Application, K8sWorkloadResource, Version, deploymentToApplication} from "../types";
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import {Application, Version } from "../types";
 import { Box, Card, CardContent, CardHeader, CircularProgress, Typography } from '@material-ui/core';
 import Status from './ui/Status';
 
-export const QuarkusApplicationDetailsCard = () => {
-  const watchedResources = [
-    ModelsPlural.pods,
-  ];
-  const k8sResourcesContextData = useK8sObjectsResponse(watchedResources);
-
-  return (
-    <K8sResourcesContext.Provider value={k8sResourcesContextData}>
-      <ApplicationDetailsCard/>
-    </K8sResourcesContext.Provider>
-  );
-};
-
-const ApplicationDetailsCard = () => {
-  const { watchResourcesData } = useContext(K8sResourcesContext);
-
-  const currentPageLocation = useLocation();
-  const [application, setApplication] = useState<Application|null>(null);
+export const QuarkusApplicationDetailsCard: React.FC<{application: Application }> = ({ application }) => {
 
   const [name, setName] = useState<string>();
   const [namespace, setNamespace] = useState<string>();
@@ -48,23 +24,6 @@ const ApplicationDetailsCard = () => {
   const [frameworkUrl, setFrameworkUrl] = useState<string>();
   const [frameworkVersion, setFrameworkVersion] = useState<Version|null>();
   const [releaseNotesUrl, setReleaseNotesUrl] = useState<string>();
-
-  useEffect(() => {
-    if (!watchResourcesData) {
-      return;
-    } 
-
-    const componentName = currentPageLocation.pathname.split("/")[4];
-    const k8sResources: K8sWorkloadResource[] | undefined = watchResourcesData?.pods?.data;
-    const deployments: V1Deployment[] = (k8sResources ? k8sResources as V1Deployment[]: [])
-    .filter((item: V1Deployment) => item && item.metadata && item.metadata.labels && 
-      item.metadata.labels['backstage.io/kubernetes-id'] === componentName && 
-      item.metadata.name && item.metadata.name.startsWith(componentName));
-    if (deployments.length === 0) {
-      return;
-    }
-    setApplication(deploymentToApplication(deployments[0])); 
-  }, [currentPageLocation, watchResourcesData]);
 
   useEffect(() => {
     if (application && application.metadata) {
