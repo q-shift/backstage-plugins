@@ -75,7 +75,6 @@ export const QuarkusVersionList = (props: FieldExtensionComponentProps<string>) 
         const recommendedVersion = findRecommendedVersion(newData);
         console.log(`Recommended version: ${recommendedVersion}`)
         formData !== undefined ? formData : onChange(recommendedVersion !== '' ? recommendedVersion : newData[0].key);
-        // formData !== undefined ? formData : onChange(newData[0].key);
 
         return newData;
     });
