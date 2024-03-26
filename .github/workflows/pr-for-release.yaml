@@ -50,8 +50,7 @@ jobs:
         - name: Calculate next version
           id: calculate_next_version
           run: |
-            VERSION_TYPE="--${{ github.event.inputs.version_type }}"
-            yarn version ${VERSION_TYPE} --no-git-tag-version --cwd plugins/quarkus/
+            yarn version --${{ github.event.inputs.version_type }} --no-git-tag-version --cwd plugins/quarkus/
             echo "version=$(cat plugins/quarkus/package.json  | jq .version -r)" >> $GITHUB_OUTPUT
 
         - name: Check if version already exists
