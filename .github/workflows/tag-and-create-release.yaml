@@ -11,7 +11,7 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: startsWith(github.event.pull_request.title, 'Release:')
+    if: startsWith(github.event.pull_request.title, 'Release:') && github.event.pull_request.merged == true
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
