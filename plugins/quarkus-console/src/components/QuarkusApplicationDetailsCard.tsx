@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {Application, Version } from "../types";
+import {Application, ApplicationPageProps, Version } from "../types";
 import { Box, Card, CardContent, CardHeader, CircularProgress, Typography } from '@material-ui/core';
 import Status from './ui/Status';
 
-export const QuarkusApplicationDetailsCard: React.FC<{application: Application }> = ({ application }) => {
+export const QuarkusApplicationDetailsCard: React.FC<ApplicationPageProps> = ({ application }) => {
 
   const [name, setName] = useState<string>();
   const [namespace, setNamespace] = useState<string>();

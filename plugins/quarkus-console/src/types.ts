@@ -112,6 +112,10 @@ export type Application = {
   };
 };
 
+export interface ApplicationPageProps {
+  application: Application;
+}
+
 export function deploymentToApplication(deployment: V1Deployment): Application {
   return {
     kind: 'Deployment',

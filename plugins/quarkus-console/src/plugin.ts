@@ -10,9 +10,8 @@ export const QuarkusConsolePlugin = createPlugin({
 
 export const QuarkusConsolePage = QuarkusConsolePlugin.provide(
     createRoutableExtension({
-        name: 'QuarkusConsolePage',
-        component: () =>
-            import('./components/QuarkusApplicationDetailsCard').then(m => m.QuarkusApplicationDetailsCard),
+        name: 'QuarkusPage',
+        component: () => import('./components/QuarkusPage').then(m => m.default),
         mountPoint: rootRouteRef,
     }),
 );

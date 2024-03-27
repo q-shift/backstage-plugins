@@ -12,18 +12,20 @@ import {
   V1Job,
 } from '@kubernetes/client-node';
 import Status from './ui/Status';
-import { Application } from '../types';
+import { ApplicationPageProps } from '../types';
 
-const ApplicationJobHealthCard: React.FC<{ application: Application }> = ({ application }) => {
+const ApplicationJobHealthCard: React.FC<ApplicationPageProps> = ({ application }) => {
 
   const allJobs = useJobs();
   const [jobs, setJobs] = useState<V1Job[]>([]);
 
   useEffect(() => {
     const newJobs: V1Job[] = [];
-    if (application && application.metadata) {
-
-      allJobs.filter((job: V1Job) => job.metadata?.name?.startsWith(application.metadata.name) && job.metadata.name.endsWith('-init')).forEach((job: V1Job) => {
+    const name = application?.metadata?.name;
+    if (name) {
+      allJobs.filter((job: V1Job) => 
+        job.metadata?.name?.startsWith(name) && job.metadata?.name.endsWith('-init'))
+        .forEach((job: V1Job) => {
         newJobs.push(job);
       })
         setJobs(newJobs);

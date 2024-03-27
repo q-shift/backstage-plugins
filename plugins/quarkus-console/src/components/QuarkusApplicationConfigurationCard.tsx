@@ -6,16 +6,16 @@ import {
   Typography,
   Tooltip,
 } from '@mui/material';
-import { Application } from '../types';
+import { ApplicationPageProps } from '../types';
 import { extractEnvironmentVariables, extractMountedConfigMaps, extractMountedSecrets } from '../utils';
 
-export const QuarkusApplicationConfigurationCard: React.FC<{application: Application }> = ({ application }) => {
+export const QuarkusApplicationConfigurationCard: React.FC<ApplicationPageProps> = ({ application }) => {
 
   type Description = {
     [key: string]: string
   };
 
-  const [envVars, setEnvVars] = useState({});
+  const [envVars, setEnvVars] = useState<{ [key: string]: string }>({});
   const [secrets, setSecrets] = useState<string[]>([]);
   const [configMaps, setConfigMaps] = useState<string[]>([]);
 
@@ -71,7 +71,7 @@ export const QuarkusApplicationConfigurationCard: React.FC<{application: Applica
     // Find the table element - adjust the selector as needed
     const tables = doc.querySelectorAll('table');
 
-    let info = null;
+    let info = "";
 
     // Iterate through all tables (if there are multiple tables for config properties)
     tables.forEach((table) => {
@@ -83,14 +83,14 @@ export const QuarkusApplicationConfigurationCard: React.FC<{application: Applica
         const typeCell = row.querySelector('td:nth-child(2)');
         const defaultCell = row.querySelector('td:nth-child(3)');
 
-        if (keyCell && descriptionCell && keyCell.textContent.includes(propertyName)) {
+        if (keyCell && descriptionCell && keyCell.textContent?.includes(propertyName)) {
           // If the config key matches the property name, get the description
-          info = descriptionCell.textContent.split('\n')
+          info = descriptionCell.textContent?.split('\n')
               .filter((line) => !line.startsWith(propertyName))
               .filter((line) => !line.startsWith('Environment Variable'))
               .filter((line) => !line.startsWith('Show more'))
               .join('\n') + ' \n'
-              'Defaults to (' + typeCell.textContent.trim() + '): ' + defaultCell.textContent.trim();
+              'Defaults to (' + typeCell?.textContent?.trim() + '): ' + defaultCell?.textContent?.trim();
                
         }
       });
@@ -104,13 +104,13 @@ export const QuarkusApplicationConfigurationCard: React.FC<{application: Applica
         <Typography variant="h5" gutterBottom>Configuration</Typography>
         {application &&
           <>
-            <Typography component="p">Name: {application.metadata.name}</Typography>
+            <Typography component="p">Name: {application.metadata?.name}</Typography>
             <Typography component="p">Environment Variables:</Typography>
             <ul>
               {Object.entries(envVars).map(([key, value]) => (
                 <li key={key}>
                   <Tooltip title={descriptionSafe(key)}>
-                    <Typography component="p"><strong>{key}:</strong> {value}</Typography>
+                    <Typography component="p"><strong>{key}:</strong>{value}</Typography>
                   </Tooltip>
                 </li>
               ))}

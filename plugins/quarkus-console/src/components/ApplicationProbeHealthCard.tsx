@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
-import { Application } from '../types';
+import { ApplicationPageProps } from '../types';
 import Status from './ui/Status';
 
-const ApplicationProbeHealthCard: React.FC<{ application: Application }> = ({ application }) => {
+const ApplicationProbeHealthCard: React.FC<ApplicationPageProps> = ({ application }) => {
 
   const [probes, setProbes] = useState<ProbeInfo>({
     readinessProbe: null,

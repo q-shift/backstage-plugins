@@ -38,6 +38,7 @@
     "@material-ui/lab": "^4.0.0-alpha.61",
     "@rjsf/utils": "^5.15.1",
     "@types/react": "^17.0.0 || ^18.0.0",
+    "@types/react-helmet": "^6.1.11",
     "axios": "^1.6.5",
     "react-router-dom": "^6.22.3",
     "react-use": "^17.2.4",
