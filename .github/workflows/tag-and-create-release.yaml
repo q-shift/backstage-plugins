@@ -11,7 +11,7 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: startsWith(github.event.pull_request.title, 'Release:')
+    if: startsWith(github.event.pull_request.title, 'Release:') && github.event.pull_request.merged == true
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -35,6 +35,34 @@ jobs:
           git tag -a "$release_version" -m "Version $release_version"
           git push --follow-tags
 
+      - name: Build Changelog
+        uses: mikepenz/release-changelog-builder-action@v4
+        id: generate_changelog
+        with:
+          configurationJson: |
+            {
+              "template": "#{{CHANGELOG}}\n\n<details>\n<summary>💬 Other Changes</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
+              "categories": [
+                {
+                    "title": "## 🎉 Exciting New Features",
+                    "labels": ["enhancement"]
+                },
+                {
+                    "title": "## 🐞 Bug Fixes",
+                    "labels": ["bug"]
+                },
+                {
+                    "title": "## 📦 Dependencies",
+                    "labels": ["dependencies"]
+                }
+              ],
+              "ignore_labels": [
+                "release"
+              ]
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -45,5 +73,7 @@ jobs:
           release_name: Release ${{ steps.get_version_number.outputs.version }}
           body: |
             Release ${{ steps.get_version_number.outputs.version }}
+
+            ${{steps.generate_changelog.outputs.changelog}}
           draft: false
           prerelease: false

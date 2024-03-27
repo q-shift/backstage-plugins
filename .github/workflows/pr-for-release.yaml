@@ -88,3 +88,5 @@ jobs:
                 * `plugins/quarkus-backend/package.json`
                 * `plugins/quarkus-console/package.json`
             base: main
+            labels: |
+              release
