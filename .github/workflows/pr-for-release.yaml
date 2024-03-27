@@ -82,9 +82,8 @@ jobs:
             body: |
               Pull request for release ${{ steps.calculate_next_version.outputs.version }}.
 
-              This pull request contains all the `package.json` files updated with the new release version
+              This pull request contains the plugin `package.json` files updated with the new release version
 
-                * `package.json`
                 * `plugins/quarkus/package.json`
                 * `plugins/quarkus-backend/package.json`
                 * `plugins/quarkus-console/package.json`
