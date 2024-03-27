@@ -26,7 +26,7 @@ jobs:
         run: |
           echo "Current git branch is: $(git branch --show-current)"
           git pull
-          echo "version=v$(npm pkg get version | tr -d '\"')" >> $GITHUB_OUTPUT
+          echo "version=v$(cat plugins/quarkus/package.json  | jq .version -r)" >> $GITHUB_OUTPUT
 
       - name: Tag the commit
         run: |
