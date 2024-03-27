@@ -1,10 +1,9 @@
 {
-  "name": "@qshift/plugin-quarkus-backend",
-  "version": "0.1.28",
+  "name": "@cmoulliard/plugin-quarkus-backend",
+  "version": "0.1.1",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "license": "Apache-2.0",
-  "private": false,
   "publishConfig": {
     "access": "public",
     "main": "dist/index.cjs.js",
@@ -22,10 +21,13 @@
     "postpack": "backstage-cli package postpack",
     "start": "backstage-cli package start",
     "test": "backstage-cli package test --passWithNoTests --coverage",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "export-dynamic": "janus-cli package export-dynamic-plugin",
+    "postversion": "yarn run export-dynamic"
   },
   "dependencies": {
     "@backstage/backend-common": "^0.21.3",
+    "@backstage/backend-dynamic-feature-service": "^0.2.7",
     "@backstage/config": "^1.1.1",
     "@backstage/plugin-scaffolder-node": "^0.3.3",
     "@types/express": "*",
@@ -41,6 +43,7 @@
   },
   "devDependencies": {
     "@backstage/cli": "^0.25.2",
+    "@janus-idp/cli": "^1.7.5",
     "@types/fs-extra": "^11.0.4",
     "@types/supertest": "^2.0.12",
     "msw": "^1.0.0",
@@ -48,9 +51,9 @@
   },
   "files": [
     "dist",
-    "doc",
-    "!**/*.tsbuildinfo",
-    "LICENSE",
+    "dist-dynamic/*.*",
+    "dist-dynamic/dist/**",
+    "dist-dynamic/alpha/*",
     "README.md"
   ]
 }
