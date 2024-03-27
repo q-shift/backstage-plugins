@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-export const QuarkusApplicationLoggingCard = () => {
+import {  ApplicationPageProps } from '../types';
+
+export const QuarkusApplicationLoggingCard: React.FC<ApplicationPageProps> = ({ application }) => {
+
+    useEffect(() => {
+      console.log('QuarkusApplicationLoggingCard: application:', application);
+    }, [application]);
+
     return (
     <>
     </>

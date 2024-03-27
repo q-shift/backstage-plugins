@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Application } from '../types';
+import { ApplicationPageProps } from '../types';
 import ApplicationVolumeHealthCard from './ApplicationVolumeHealthCard';
 import ApplicationJobHealthCard from './ApplicationJobHealthCard';
 import ApplicationInitContainerHealthCard from './ApplicationInitContainerHealthCard';
 import ApplicationProbeHealthCard from './ApplicationProbeHealthCard';
 import { Card, CardContent, Typography } from '@material-ui/core';
 
-const QuarkusApplicationHealthCard: React.FC<{ application: Application }> = ({ application }) => {
+const QuarkusApplicationHealthCard: React.FC<ApplicationPageProps> = ({ application }) => {
 
 
   return (

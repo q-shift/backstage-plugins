@@ -9,9 +9,9 @@ import {
 import { V1Container, V1Pod } from '@kubernetes/client-node';
 import Status from './ui/Status';
 import { usePods } from '../services/useK8sObjectsResponse';
-import { Application } from '../types';
+import { ApplicationPageProps } from '../types';
 
-const ApplicationInitContainerHealthCard: React.FC<{ application: Application }> = ({ application }) => {
+const ApplicationInitContainerHealthCard: React.FC<ApplicationPageProps> = ({ application }) => {
 
   const allPods = usePods();
   const [pods, setPods] = useState<V1Pod[]>([]);
