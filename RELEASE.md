@@ -68,3 +68,82 @@ Automatic workflow that publishes the packages to the _npmjs.org_ registry.
 > [!WARNING] 
 > Although this workflow can be executed manually it hasn't been 
 > prepared for it yet.
+
+
+# Dynamic plugins
+
+This section is a WIP and detail the steps to be done to release a dynamic plugin
+
+Prior to publish a `dinamic-plugin` it is needed to compile, build and generate the dynamic stuffs:
+```bash
+yarn tsc
+yarn build
+yarn export-dynamic
+```
+
+## Generate a local tarball and publish it to a http registry on ocp
+
+Create a temporary folder where we will publish the tarballs:
+
+```bash
+mkdir ~/temp/dynamic-plugins-root/
+```
+
+Move to the plugin project that you want to `pack`
+
+```bash
+NPM_CONFIG_IGNORE_SCRIPTS='true' npm pack ./dist-dynamic --pack-destination ~/temp/dynamic-plugins-root/
+
+**Note**: To get the sha sum integrity, execute this command: `NPM_CONFIG_IGNORE_SCRIPTS='true' npm pack ./dist-dynamic --json | jq -r '.[0].integrity'`
+
+**Important**: For testing purpose, you can add the `SKIP_INTEGRITY_CHECK` env variable to "true" to the `install-dynamic-plugins` initContainer !
+
+When the tarball(s) have been generated, it is time to publish them on a HTTP registry
+```bash
+cd ~/temp
+oc login --token=sha256~... --server=https://api.qshift.snowdrop.dev:6443
+
+oc project OR oc new-project rhdh
+oc new-build httpd --name=plugin-registry --binary
+oc start-build plugin-registry --from-dir=dynamic-plugins-root --wait
+oc new-app --image-stream=plugin-registry
+
+to update the http registry as documented here https://issues.redhat.com/browse/RHIDP-1624
+oc start-build plugin-registry --from-dir=dynamic-plugins-root --wait
+```
+
+Update next the helm values of the RHDH helm chart using the ocp's developer view.
+
+- Click on the `upgrade` action from the helm chart deployed
+- If you use the `Form view` of the `developer-hub` chart installed, then click on `root schema/dynamic plugins configuration/list of dynamic plugins ...`
+- Add the plugin(s)
+
+Example
+```yaml
+global:
+  dynamic:
+    includes:
+      - dynamic-plugins.default.yaml
+    plugins:
+      - package: http://plugin-registry:8080/qshift-plugin-quarkus-backend-dynamic-dynamic-0.1.0.tgz
+        integrity: sha512-wKDRm+tyJwCdDbAGYakXGV1Q7JNjikrERaUYYHqce5mki7yP2fAWJ4rFxKXgj/t1oRg0sZDIWeMS3MtvxuR5SA==
+        disabled: false
+```
+
+## Publish on npmjs the node_modules (NOT RECOMMENDED)
+
+If it is not possible to publish the `dynamic` plugin to a local registry, then you can still publish it with the node_modules on npmjs
+by executing the following commands.
+
+**Important**: This is not recommended !
+```bash
+cd <plugin_project> 
+cd ./dist-dynamic; NPM_CONFIG_IGNORE_SCRIPTS='true' npm publish --access public
+```
+
+Next, get the tarball URL and integrity sha
+```bash
+NPM_ACCOUNT=<YOUR_NPMJS_ACCOUNT>
+npm info @$NPM_ACCOUNT/plugin-quarkus-backend --json | jq -r '.dist.integrity'
+npm info @$NPM_ACCOUNT/plugin-quarkus-backend --json | jq -r '.dist.tarball'
+```
