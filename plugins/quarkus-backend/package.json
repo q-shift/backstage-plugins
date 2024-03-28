@@ -1,8 +1,8 @@
 {
-  "name": "@cmoulliard/plugin-quarkus-backend",
-  "version": "0.1.2",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "name": "@qshift/plugin-quarkus-backend-dynamic",
+  "version": "0.1.0",
+  "main": "dist/index.cjs.js",
+  "types": "dist/index.d.ts",
   "license": "Apache-2.0",
   "publishConfig": {
     "access": "public",
@@ -15,15 +15,15 @@
   "scripts": {
     "build": "backstage-cli package build",
     "clean": "backstage-cli package clean",
+    "export-dynamic": "janus-cli package export-dynamic-plugin",
     "lint": "backstage-cli package lint",
     "npm": "npm",
+    "postversion": "yarn run export-dynamic",
     "prepack": "backstage-cli package prepack",
     "postpack": "backstage-cli package postpack",
     "start": "backstage-cli package start",
     "test": "backstage-cli package test --passWithNoTests --coverage",
-    "tsc": "tsc",
-    "export-dynamic": "janus-cli package export-dynamic-plugin",
-    "postversion": "yarn run export-dynamic"
+    "tsc": "tsc"
   },
   "dependencies": {
     "@backstage/backend-common": "^0.21.3",
@@ -56,19 +56,20 @@
   },
   "typesVersions": {
     "*": {
-      "alpha": [
-        "src/alpha.ts"
-      ],
-      "package.json": [
-        "package.json"
-      ]
-    }
+        "alpha": [
+            "src/alpha.ts"
+          ],
+        "package.json": [
+            "package.json"
+          ]
+      }
   },
   "files": [
     "dist",
     "dist-dynamic/*.*",
     "dist-dynamic/dist/**",
     "dist-dynamic/alpha/*",
-    "README.md"
+    "README.md",
+    "alpha"
   ]
 }
