@@ -2,7 +2,7 @@ dynamicPlugins:
   frontend:
     qshift.plugin-quarkus-console:
       mountPoints:
-        - mountPoint: entity.page.topology/cards
+        - mountPoint: entity.page.quarkus/cards
           importName: QuarkusConsolePage
           config:
             layout:
