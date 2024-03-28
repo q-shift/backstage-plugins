@@ -89,11 +89,20 @@ Create a temporary folder where you will publish the tarballs:
 mkdir ~/temp/dynamic-plugins-root/
 ```
 
-Move to the plugin project that you want to `pack`
+Move to the plugin project that you want to `pack` and execute the following commands
+
+1. Backend plugins
 
 ```bash
 NPM_CONFIG_IGNORE_SCRIPTS='true' npm pack ./dist-dynamic --pack-destination ~/temp/dynamic-plugins-root/
 ```
+
+2. Frontend plugins
+
+```bash
+npm pack --pack-destination ~/temp/dynamic-plugins-root/ 
+```
+
 
 **Note**: To get the sha sum integrity, execute this command: `NPM_CONFIG_IGNORE_SCRIPTS='true' npm pack ./dist-dynamic --json | jq -r '.[0].integrity'`
 
@@ -128,7 +137,7 @@ global:
     includes:
       - dynamic-plugins.default.yaml
     plugins:
-      - package: http://plugin-registry:8080/qshift-plugin-quarkus-backend-dynamic-dynamic-0.1.0.tgz
+      - package: http://plugin-registry:8080/qshift-plugin-quarkus-backend-dynamic-0.1.28.tgz
         integrity: sha512-wKDRm+tyJwCdDbAGYakXGV1Q7JNjikrERaUYYHqce5mki7yP2fAWJ4rFxKXgj/t1oRg0sZDIWeMS3MtvxuR5SA==
         disabled: false
 ```
