@@ -83,7 +83,7 @@ yarn export-dynamic
 
 ## Generate a local tarball and publish it to a http registry on ocp
 
-Create a temporary folder where we will publish the tarballs:
+Create a temporary folder where you will publish the tarballs:
 
 ```bash
 mkdir ~/temp/dynamic-plugins-root/
@@ -93,12 +93,13 @@ Move to the plugin project that you want to `pack`
 
 ```bash
 NPM_CONFIG_IGNORE_SCRIPTS='true' npm pack ./dist-dynamic --pack-destination ~/temp/dynamic-plugins-root/
+```
 
 **Note**: To get the sha sum integrity, execute this command: `NPM_CONFIG_IGNORE_SCRIPTS='true' npm pack ./dist-dynamic --json | jq -r '.[0].integrity'`
 
 **Important**: For testing purpose, you can add the `SKIP_INTEGRITY_CHECK` env variable to "true" to the `install-dynamic-plugins` initContainer !
 
-When the tarball(s) have been generated, it is time to publish them on a HTTP registry
+When the tarball(s) has(have) been generated, it is time to publish them on a HTTP registry
 ```bash
 cd ~/temp
 oc login --token=sha256~... --server=https://api.qshift.snowdrop.dev:6443
@@ -107,8 +108,10 @@ oc project OR oc new-project rhdh
 oc new-build httpd --name=plugin-registry --binary
 oc start-build plugin-registry --from-dir=dynamic-plugins-root --wait
 oc new-app --image-stream=plugin-registry
+```
 
-to update the http registry as documented here https://issues.redhat.com/browse/RHIDP-1624
+To update the http registry as documented here https://issues.redhat.com/browse/RHIDP-1624
+```bash
 oc start-build plugin-registry --from-dir=dynamic-plugins-root --wait
 ```
 
