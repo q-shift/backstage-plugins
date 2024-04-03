@@ -74,7 +74,7 @@ Automatic workflow that publishes the packages to the _npmjs.org_ registry.
 
 This section is a WIP and detail the steps to be done to release a dynamic plugin
 
-Prior to publish a `dinamic-plugin` it is needed to compile, build and generate the dynamic stuffs:
+Prior to publish a `dynamic-plugin` it is needed to compile, build and generate the dynamic stuffs:
 ```bash
 yarn tsc
 yarn build
