@@ -48,7 +48,7 @@ const ApplicationInitContainerHealthCard: React.FC<ApplicationPageProps> = ({ ap
   };
 
   return (
-    <Card>
+    <Card style={{ height: '100%'}} >
       <CardContent>
         <Typography variant="h5" component="div">
           Init Containers

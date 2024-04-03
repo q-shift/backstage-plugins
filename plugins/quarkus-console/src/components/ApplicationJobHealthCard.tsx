@@ -58,7 +58,7 @@ const ApplicationJobHealthCard: React.FC<ApplicationPageProps> = ({ application 
   };
 
   return (
-    <Card>
+    <Card style={{ height: '100%'}} >
       <CardContent>
         <Typography variant="h5" component="div">
           Jobs

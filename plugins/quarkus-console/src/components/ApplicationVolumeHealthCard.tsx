@@ -99,7 +99,7 @@ const ApplicationVolumeHealthCard: React.FC<ApplicationPageProps> = ({ applicati
   }
 
   return (
-    <Card>
+    <Card style={{ height: '100%'}} >
       <CardContent>
         <Typography variant="h5" gutterBottom>Volumes</Typography>
         <List>
