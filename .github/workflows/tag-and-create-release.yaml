@@ -63,6 +63,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: List package URL
+        id: list_package_url
+        run: |
+          PACKAGE_URL=$(find plugins/ -maxdepth 2 -name package.json -exec sh -c "echo -n '  - https://www.npmjs.com/package/' ; cat {} | jq -j '.name' ; echo -n /v/ ; cat {} | jq -j '.version' ; printf '\n'" \;)
+          echo "PACKAGE_URL_MD<<EOF" >> $GITHUB_ENV
+          echo "$PACKAGE_URL" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -72,8 +80,14 @@ jobs:
           tag_name: ${{ steps.get_version_number.outputs.version }}
           release_name: Release ${{ steps.get_version_number.outputs.version }}
           body: |
-            Release ${{ steps.get_version_number.outputs.version }}
+            **Release ${{ steps.get_version_number.outputs.version }}**
+
+            ## Changes
 
             ${{steps.generate_changelog.outputs.changelog}}
+
+            ## npm packages
+
+            ${{ env.PACKAGE_URL_MD }}
           draft: false
           prerelease: false
