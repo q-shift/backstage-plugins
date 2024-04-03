@@ -72,6 +72,14 @@ jobs:
             jq '.version = "${{ steps.calculate_next_version.outputs.version }}"' plugins/quarkus-backend/package.json | sponge plugins/quarkus-backend/package.json
             jq '.version = "${{ steps.calculate_next_version.outputs.version }}"' plugins/quarkus-console/package.json | sponge plugins/quarkus-console/package.json
 
+        - name: List package.json files
+          id: list_package_json_files
+          run: |
+            PLUGIN_FILES=$(find plugins/ -maxdepth 2 -name package.json -exec echo '  - `'{}'`' \;)
+            echo "PLUGIN_FILES_MD<<EOF" >> $GITHUB_ENV
+            echo "$PLUGIN_FILES" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+
         - name: Create pull request for release
           id: create_pr
           uses: peter-evans/create-pull-request@v6
@@ -84,9 +92,7 @@ jobs:
 
               This pull request contains the plugin `package.json` files updated with the new release version
 
-                * `plugins/quarkus/package.json`
-                * `plugins/quarkus-backend/package.json`
-                * `plugins/quarkus-console/package.json`
+              ${{ env.PLUGIN_FILES_MD }}
             base: main
             labels: |
               release
