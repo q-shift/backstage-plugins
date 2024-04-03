@@ -23,7 +23,7 @@ const ApplicationProbeHealthCard: React.FC<ApplicationPageProps> = ({ applicatio
   }, [application]);
 
   return (
-    <Card>
+    <Card style={{ height: '100%'}} >
       <CardContent>
         <Typography variant="h5" component="div">
           Probes
