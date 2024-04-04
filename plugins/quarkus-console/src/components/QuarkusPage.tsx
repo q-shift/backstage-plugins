@@ -40,6 +40,8 @@ const QuarkusPage = () => {
     if (!k8sResourcesContextData) {
       return;
     } 
+    let clusterIndex = k8sResourcesContextData.selectedCluster ?? 0;
+    let clusterName = k8sResourcesContextData.clusters[clusterIndex];
     const componentName = currentPageLocation.pathname.split("/")[4];
     const k8sResources: K8sResource[] | undefined = k8sResourcesContextData?.watchResourcesData?.deployments?.data;
     const deployments: V1Deployment[] = (k8sResources ? k8sResources as V1Deployment[]: [])
@@ -50,7 +52,7 @@ const QuarkusPage = () => {
       return;
     }
     let newApp: Application = deploymentToApplication(deployments[0]);
-    newApp.cluster = k8sResourcesContextData.selectedCluster;
+    newApp.clusterName = clusterName;
     console.log('application:', newApp);
     setApplication(newApp); 
   }, [currentPageLocation]);
