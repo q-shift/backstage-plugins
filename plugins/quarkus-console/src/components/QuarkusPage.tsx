@@ -51,7 +51,7 @@ const QuarkusPage = () => {
     }
     console.log('deployments:', deployments[0]);
     setApplication(deploymentToApplication(deployments[0])); 
-  }, [currentPageLocation, k8sResourcesContextData]);
+  }, [currentPageLocation]);
 
   return (
     <>
