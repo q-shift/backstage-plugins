@@ -49,8 +49,10 @@ const QuarkusPage = () => {
     if (deployments.length === 0) {
       return;
     }
-    console.log('deployments:', deployments[0]);
-    setApplication(deploymentToApplication(deployments[0])); 
+    let newApp: Application = deploymentToApplication(deployments[0]);
+    newApp.cluster = k8sResourcesContextData.selectedCluster;
+    console.log('application:', newApp);
+    setApplication(newApp); 
   }, [currentPageLocation]);
 
   return (
