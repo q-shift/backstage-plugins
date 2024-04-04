@@ -99,7 +99,7 @@ export type Application = {
   memory?: string;
   url?: string;
   metrics?: Metrics;
-  cluster?: number;
+  clusterName?: string;
   spec?: V1PodSpec;
   status?: {
     availableReplicas?: number;
