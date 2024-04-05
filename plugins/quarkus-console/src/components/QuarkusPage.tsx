@@ -35,7 +35,6 @@ const QuarkusPage = () => {
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setActiveTabKey(newValue);
   };
-
   useEffect(() => {
     if (!k8sResourcesContextData) {
       return;
@@ -53,9 +52,8 @@ const QuarkusPage = () => {
     }
     let newApp: Application = deploymentToApplication(deployments[0]);
     newApp.clusterName = clusterName;
-    console.log('application:', newApp);
     setApplication(newApp); 
-  }, [currentPageLocation]);
+  }, [currentPageLocation, k8sResourcesContextData]);
 
   return (
     <>
