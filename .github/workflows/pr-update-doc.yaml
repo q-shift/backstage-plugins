@@ -1,0 +1,75 @@
+name: Update the documentation on PR merge
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+  
+jobs:
+  generateDocs:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+
+      - name: List all changed files
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "$file was changed"
+          done
+
+      - name: Check if contains README.md
+        id: pr_contains_readme
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          echo ${ALL_CHANGED_FILES} | grep -c README.md
+          echo "grep_result=$(echo ${ALL_CHANGED_FILES} | grep -c README.md)" >> $GITHUB_OUTPUT
+
+      - name: Generate main README.md from template
+        if: steps.pr_contains_readme.outputs.grep_result > 0
+        run: |
+          echo "Generate README.md from template"
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+          m4 README.m4.template.md > README.md
+          git add README.md
+          git commit -m "Generated main README.md file from template"
+          git push
+
+      - name: Don't generate main README.md
+        if: steps.pr_contains_readme.outputs.grep_result == 0
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          echo "Don't generate README.md"
+
+      # - name: Check if contains GARBAGE
+      #   env:
+      #     ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+      #   run: |
+      #     echo ${ALL_CHANGED_FILES} | grep GARBAGE
+
+      # - name: Check PR
+      #   uses: JJ/github-pr-contains-action@releases/v4
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     diffContains: 'README.md'
+
+      # - name: Get changes
+      #   run: git diff --name-only -r HEAD^1 HEAD
+
