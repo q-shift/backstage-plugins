@@ -36,7 +36,9 @@ jobs:
         id: pr_contains_readme
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        continue-on-error: true
         run: |
+          set +e
           echo ${ALL_CHANGED_FILES} | grep -c README.md
           echo "grep_result=$(echo ${ALL_CHANGED_FILES} | grep -c README.md)" >> $GITHUB_OUTPUT
 
