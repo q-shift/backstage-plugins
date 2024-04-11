@@ -43,7 +43,7 @@ jobs:
       - name: Generate main README.md from template
         if: steps.pr_contains_readme.outputs.grep_result > 0
         run: |
-          echo "Generate README.md from template"
+          echo "Generate a new README.md merging content from plugins README"
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
           m4 README.m4.template.md > README.md
