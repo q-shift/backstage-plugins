@@ -1,6 +1,6 @@
-## Quarkus Frontend
+## Scaffold template fields
 
-This plugin proposes different UI fields to:
+This plugin proposes different UI fields to be used part of a template scaffolded by backstage:
 
 | Name                                                        | Description                                                                                                                     |
 |-------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
@@ -9,19 +9,16 @@ This plugin proposes different UI fields to:
 | [QuarkusVersionList](#Quarkus-version-list-field)           | List the recommended and available versions of Quarkus                                                                          |
 
 
-**NOTE**: Such frontend feature(s) should be used with the quarkus scaffolder backend plugin (described hereafter) in order to get the generated project from https://code.quarkus.io/ as zip file !
+**NOTE**: Such frontend feature(s) should be used with the quarkus scaffolder backend plugin !
 
-### Quarkus UI fields
-
-To use the frontend components, import the needed package under the following path within an existing backstage application:
+To use them, import the needed package under the following path within an existing backstage application:
 ```
-cd packages/app
-yarn add "@qshift/plugin-quarkus"
+yarn add --cwd packages/app "@qshift/plugin-quarkus"
 ```
 
-Next, customize the `packages/app/src/App.tsx` file according to the field that you plan to use
+Next, customize the `packages/app/src/App.tsx` file according to the field that you plan to use and described hereafter
 
-#### Quarkus extensions field
+### Quarkus extensions field
 
 This field allows a user to pick up Quarkus extension(s) from the code generator server.
 
@@ -97,7 +94,7 @@ Quarkus Extension List - Select (field):
 Quarkus Extension List - Added (field):
 ![extensions-3.png](plugins%2Fquarkus%2Fdoc%2Fextensions-3.png)
 
-#### Quarkus Quickstart picker field
+### Quarkus Quickstart picker field
 
 This field allows a user to pick up a Quarkus Quickstart project.
 
@@ -153,7 +150,7 @@ Quarkus Quickstart Picker - default (field):
 Quarkus Quickstart Picker - select (field):
 ![quickstart-2.png](plugins/quarkus/doc/quickstart-2.png)
 
-#### Quarkus Version list field
+### Quarkus Version list field
 
 This field allows a user to select a Quarkus version from the list of the recommended and available version.
 

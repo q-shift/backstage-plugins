@@ -2,11 +2,6 @@
 
 This project contains different [Backstage](https://backstage.io/) plugins to work with [Quarkus](https://quarkus.io/) which is a Kubernetes-native Java framework tailored for GraalVM and HotSpot, crafted from best-of-breed Java libraries and standards.
 
-This repository contains the following Backstage plugins:
-
-- [Quarkus Frontend](#quarkus-frontend)
-- [Quarkus Scaffolder Backend](#quarkus-scaffolder-backend)
-
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/en) (18 or 20)
