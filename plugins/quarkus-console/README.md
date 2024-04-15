@@ -19,4 +19,17 @@ const serviceEntityPage = (
       <QuarkusPage />
     </EntityLayout.Route>
 ```
-Start backstage, register a quarkus component and open the Quarkus view.
+Start backstage, register a quarkus component including the following annotations
+
+```yaml
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: my-quarkus-app
+  description: A cool quarkus app
+  annotations:
+    app.kubernetes.io/name: quarkus
+    app.quarkus.io/quarkus-version: "3.9"
+```
+
+and open the Quarkus view using the software catalog.
