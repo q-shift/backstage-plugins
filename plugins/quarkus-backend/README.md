@@ -1,18 +1,19 @@
-## Quarkus Scaffolder Backend
+## Quarkus actions
 
 This plugin proposes 2 actions able to:
 
-- Clone a Quarkus "Quickstart" repository. Action: `quarkus:quickstart:clone`
-- Create a Quarkus using the website `code.quarkus.io` able to generate a zip file of a Quarkus project and extensions selected (using extension list field). Action: `quarkus:app:create`
+| Action                     | Description                                                                                                                                                |
+|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `quarkus:app:create`       | Create a Quarkus using the website `code.quarkus.io` able to generate a zip file of a Quarkus project and extensions selected (using extension list field) |
+| `quarkus:quickstart:clone` | Clone a Quarkus "Quickstart" repository.                                                                                                                   |
 
-To use the scaffolder backend, import the package under the following path:
+To use this plugin, import the following packages under the following path:
 ```bash
-cd packages/backend
-yarn add "@qshift/plugin-quarkus-backend"
-yarn add "@backstage/integration"
+yarn add --cwd packages/backend "@qshift/plugin-quarkus-backend"
+yarn add --cwd packages/backend "@backstage/integration"
 ```
 
-### quickstart:clone action
+### quickstart:clone
 
 To use the Quarkus action able to clone a quarkus quickstart from this [repository](https://github.com/quarkusio/quarkus-quickstarts), then edit the file `packages/backend/src/plugins/scaffolder.ts` to register the action: `cloneQuarkusQuickstart`.
 
@@ -66,7 +67,7 @@ Example of action:
           additionalProperties: ${{ parameters.additionalProperties }}
 ```
 
-### app:create action
+### app:create
 
 To use the Quarkus action able to create a quarkus application using `code.quarkus.io`, then edit the file `packages/backend/src/plugins/scaffolder.ts` to register the action: `createQuarkusApp`.
 
