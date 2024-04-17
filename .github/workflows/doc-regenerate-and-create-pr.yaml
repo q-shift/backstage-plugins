@@ -1,4 +1,4 @@
-name: Regenerate docs and create PR
+name: Generate doc and create PR
 
 on:
   workflow_dispatch:
