@@ -1,0 +1,51 @@
+name: Regenerate docs and create PR
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  
+jobs:
+  generateDocsPR:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: Setup Git
+        run: |
+            git config user.name "${{ github.actor }}"
+            git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+
+      - name: Generate main README.md from template
+        run: |
+          echo "Generate README.md from template"
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+          m4 README.m4.template.md > README.md
+          # git add README.md
+          # git commit -m "Generated main README.md file from template"
+          # git push
+
+      - name: Create pull request for the generated docs
+        id: create_pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ steps.date.outputs.date }}
+          title: "Documentation update - ${{ steps.date.outputs.date }}"
+          body: |
+            Pull request for docs update.
+
+            This pull request contains the generated documentation.
+
+          base: main
+          labels: |
+            documentation
