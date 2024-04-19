@@ -1,11 +1,7 @@
+
 # @qshift/quarkus-plugins
 
 This project contains different [Backstage](https://backstage.io/) plugins to work with [Quarkus](https://quarkus.io/) which is a Kubernetes-native Java framework tailored for GraalVM and HotSpot, crafted from best-of-breed Java libraries and standards.
-
-This repository contains the following Backstage plugins:
-
-- [Quarkus Frontend](#quarkus-frontend)
-- [Quarkus Scaffolder Backend](#quarkus-scaffolder-backend)
 
 ## Prerequisites
 
@@ -19,30 +15,11 @@ To play with one of our plugins, create first a [Backstage](https://backstage.io
 npx @backstage/create-app@latest
 ```
 
-To fix the React issue https://github.com/backstage/backstage/issues/22142 which has been reported using the client `0.25` and backstage (> 1.21),
-then edit the `package.json` to add the following dependency:
-```json
-  "resolutions": {
-...
-    "swagger-ui-react": "5.10.5"
-  },
-```
+Next, verify if the newly application created is working fine: `yarn dev`
 
-Verify if the newly application created is working fine: `yarn dev`
+If this is the case, you can start to play with one or all our plugins :-)
 
-## Quarkus Frontend
-
-This plugin proposes different UI fields to:
-
-| Name                                                        | Description                                                                                                                     |
-|-------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| [QuarkusExtensionList](#Quarkus-extensions-field)           | Filter, select your Quarkus extensions using the `Quarkus Extension List` field.                                                |
-| [QuarkusQuickstartPicker](#Quarkus-Quickstart-picker-field) | Select using the `Quarkus QuickStart Picker` one of the quickstarts available: https://github.com/quarkusio/quarkus-quickstarts |
-| [QuarkusVersionList](#Quarkus-version-list-field)           | List the recommended and available versions of Quarkus                                                                          |
-
-**NOTE**: Such frontend feature(s) should be used with the quarkus scaffolder backend plugin (described hereafter) in order to get the generated project from https://code.quarkus.io/ as zip file !
-
-### Quarkus console
+## Quarkus Console
 
 Before to use the quarkus console, it is needed to install and configure the kubernetes plugin as [documented](https://backstage.io/docs/features/kubernetes/installation).
 
@@ -63,19 +40,42 @@ const serviceEntityPage = (
       <QuarkusPage />
     </EntityLayout.Route>
 ```
-Start backstage, register a quarkus component and open the Quarkus view.
+Start backstage, register a quarkus component including the following annotations
 
-### Quarkus UI fields
-
-To use the frontend components, import the needed package under the following path within an existing backstage application:
+```yaml
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: my-quarkus-app
+  description: A cool quarkus app
+  annotations:
+    app.kubernetes.io/name: quarkus
+    app.quarkus.io/quarkus-version: "3.9"
 ```
-cd packages/app
-yarn add "@qshift/plugin-quarkus"
+
+and open the Quarkus view using the software catalog.
+
+## Scaffold template fields
+
+This plugin proposes different UI fields to be used part of a template scaffolded by backstage:
+
+| Name                                                        | Description                                                                                                                     |
+|-------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| [QuarkusExtensionList](#Quarkus-extensions-field)           | Filter, select your Quarkus extensions using the `Quarkus Extension List` field.                                                |
+| [QuarkusQuickstartPicker](#Quarkus-Quickstart-picker-field) | Select using the `Quarkus QuickStart Picker` one of the quickstarts available: https://github.com/quarkusio/quarkus-quickstarts |
+| [QuarkusVersionList](#Quarkus-version-list-field)           | List the recommended and available versions of Quarkus                                                                          |
+
+
+**NOTE**: Such frontend feature(s) should be used with the quarkus scaffolder backend plugin !
+
+To use them, import the needed package under the following path within an existing backstage application:
+```
+yarn add --cwd packages/app "@qshift/plugin-quarkus"
 ```
 
-Next, customize the `packages/app/src/App.tsx` file according to the field that you plan to use
+Next, customize the `packages/app/src/App.tsx` file according to the field that you plan to use and described hereafter
 
-#### Quarkus extensions field
+### Quarkus extensions field
 
 This field allows a user to pick up Quarkus extension(s) from the code generator server.
 
@@ -143,19 +143,15 @@ If you would like to use a different code generator server, set the following pr
 ```
 
 Quarkus Extension List - default (field):
-![extensions-1.png](plugins/quarkus/doc/extensions-1.png)
+![extensions-1.png](plugins%2Fquarkus%2Fdoc%2Fextensions-1.png)
 
 Quarkus Extension List - Select (field):
-![extensions-2.png](plugins/quarkus/doc/extensions-2.png)
+![extensions-2.png](plugins%2Fquarkus%2Fdoc%2Fextensions-2.png)
 
 Quarkus Extension List - Added (field):
-![extensions-3.png](plugins/quarkus/doc/extensions-3.png)
+![extensions-3.png](plugins%2Fquarkus%2Fdoc%2Fextensions-3.png)
 
-#### Quarkus Version list field
-
-This field allows a user to select a Quarkus version from the list of the recommended and available version.
-
-#### Quarkus Quickstart picker field
+### Quarkus Quickstart picker field
 
 This field allows a user to pick up a Quarkus Quickstart project.
 
@@ -211,7 +207,7 @@ Quarkus Quickstart Picker - default (field):
 Quarkus Quickstart Picker - select (field):
 ![quickstart-2.png](plugins/quarkus/doc/quickstart-2.png)
 
-#### Quarkus Version list field
+### Quarkus Version list field
 
 This field allows a user to select a Quarkus version from the list of the recommended and available version.
 
@@ -258,7 +254,7 @@ spec:
   ...
 ```
 
-When done, you will be able to select the quarkus version to be used to scaffold
+When done, you will be able to select the quarkus version to be used to scaffold 
 your quarkus project
 
 Quarkus Version list - Select (field):
@@ -267,21 +263,22 @@ Quarkus Version list - Select (field):
 Quarkus Version list - Recommended (field):
 ![version-recommended.png](plugins/quarkus/doc/version-recommended.png)
 
-## Quarkus Scaffolder Backend
+## Quarkus actions
 
 This plugin proposes 2 actions able to:
 
-- Clone a Quarkus "Quickstart" repository. Action: `quarkus:quickstart:clone`
-- Create a Quarkus using the website `code.quarkus.io` able to generate a zip file of a Quarkus project and extensions selected (using extension list field). Action: `quarkus:app:create`
+| Action                     | Description                                                                                                                                                |
+|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `quarkus:app:create`       | Create a Quarkus using the website `code.quarkus.io` able to generate a zip file of a Quarkus project and extensions selected (using extension list field) |
+| `quarkus:quickstart:clone` | Clone a Quarkus "Quickstart" repository.                                                                                                                   |
 
-To use the scaffolder backend, import the package under the following path:
+To use this plugin, import the following packages under the following path:
 ```bash
-cd packages/backend
-yarn add "@qshift/plugin-quarkus-backend"
-yarn add "@backstage/integration"
+yarn add --cwd packages/backend "@qshift/plugin-quarkus-backend"
+yarn add --cwd packages/backend "@backstage/integration"
 ```
 
-### quickstart:clone action
+### quickstart:clone
 
 To use the Quarkus action able to clone a quarkus quickstart from this [repository](https://github.com/quarkusio/quarkus-quickstarts), then edit the file `packages/backend/src/plugins/scaffolder.ts` to register the action: `cloneQuarkusQuickstart`.
 
@@ -289,7 +286,7 @@ Here is a snippet example of code changed
 ```typescript
 import { ScmIntegrations } from '@backstage/integration';
 import {createBuiltinActions, createRouter} from '@backstage/plugin-scaffolder-backend';
-import { cloneQuarkusQuickstart } from '@qshift/plugin-quarkus-backend';
+import { cloneQuarkusQuickstart } from '@internal/plugin-quarkus-backend';
 ...
   const integrations = ScmIntegrations.fromConfig(env.config);
 
@@ -308,13 +305,17 @@ import { cloneQuarkusQuickstart } from '@qshift/plugin-quarkus-backend';
 
 The following table details the fields that you can use to use this action:
 
-| Input                | Description                                                     | Type    | Required |
-|----------------------|-----------------------------------------------------------------|---------|----------|
-| quickstartName       | The name of the quickstart project to be used                   | string  | Yes      |
-| groupId              | Maven GroupID                                                   | string  | No       |
-| artifactId           | Maven ArtifactID                                                | string  | No       |
-| version              | Maven Version                                                   | string  | No       |
-| additionalProperties | Quarkus properties                                              | string  | No       |
+| Input               | Description                                   | Type          | Required |
+|---------------------|-----------------------------------------------|---------------|----------|
+| quickstartName      | The name of the quickstart project to be used | string        | Yes      |
+| groupId             | Maven GroupID                                     | No    |
+| artifactId          | Maven ArtifactID                                  | No    |
+| targetPath          | Target Path to access the code within the workspace | No    |
+| additionalProperties | Quarkus properties                                | No    |
+| database            | Quarkus backend database (PostgreSQL, etc)        | No    |
+| infoEndpoint        | Quarkus API endpoint                              | No    |
+| healthEndpoint      | Kubernetes Health ednpoint                        | No    |
+| metricsEndpoint     | Enpoint exposing the Quarkus metrics              | No    |
 
 Example of action:
 ```yaml
@@ -331,7 +332,7 @@ Example of action:
           additionalProperties: ${{ parameters.additionalProperties }}
 ```
 
-### app:create action
+### app:create
 
 To use the Quarkus action able to create a quarkus application using `code.quarkus.io`, then edit the file `packages/backend/src/plugins/scaffolder.ts` to register the action: `createQuarkusApp`.
 
@@ -339,7 +340,7 @@ Here is a snippet example of code changed
 ```typescript
 import { ScmIntegrations } from '@backstage/integration';
 import {createBuiltinActions, createRouter} from '@backstage/plugin-scaffolder-backend';
-import { createQuarkusApp } from '@qshift/plugin-quarkus-backend';
+import { createQuarkusApp } from '@internal/plugin-quarkus-backend';
 ...
   const integrations = ScmIntegrations.fromConfig(env.config);
 
@@ -355,7 +356,7 @@ import { createQuarkusApp } from '@qshift/plugin-quarkus-backend';
   return await createRouter({
     actions,
 ```
-The following table details the fields that you can use with this action:
+The following table details the fields that you can use to use this action:
 
 | Input                | Description                                                      | Type    | Required |
 |----------------------|------------------------------------------------------------------|---------|----------|
@@ -373,7 +374,6 @@ The following table details the fields that you can use with this action:
 | infoEndpoint         | Has a Quarkus API endpoint ?                                     | boolean | No       |
 | healthEndpoint       | Has a Kubernetes Health endpoint ?                               | boolean | No       |
 | metricsEndpoint      | Has a Quarkus metrics endpoint ?                                 | boolean | No       |
-
 
 Example of action:
 ```yaml
@@ -398,4 +398,4 @@ Example of action:
           starterCode: true
 ```
 
-Enjoy !
+
