@@ -49,6 +49,7 @@ jobs:
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
           m4 README.m4.template.md > README.md
+          set +e
           git add README.md
           git commit -m "Generated main README.md file from template"
           git push
