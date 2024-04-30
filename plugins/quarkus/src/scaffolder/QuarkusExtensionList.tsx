@@ -135,7 +135,7 @@ const Listbox = styled.ul`
     }
 `;
 
-export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData, uiSchema }: FieldProps<string[]>) => {
+export const QuarkusExtensionList = ({ onChange, rawErrors, required, formData, uiSchema }: FieldProps<string[]>) => {
     const {
         getRootProps,
         getInputLabelProps,
@@ -149,8 +149,6 @@ export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData,
         setAnchorEl,
     } = useAutocomplete({
         id: 'quarkus-extension-list',
-        // TODO: Check if the code change does not break the logic of the plugin
-        defaultValue: quarkusExtensions && quarkusExtensions.length > 0 ? [{ id: quarkusExtensions[0].id, name: quarkusExtensions[0].name }] : [],
         multiple: true,
         options: uniqueExtensions(sortExtensions(quarkusExtensions)),
         getOptionLabel: (option: {id: string, name: string}) => option.id,
@@ -171,6 +169,7 @@ export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData,
   const filteredExtensions = (filter as { extensions?: string[] })?.extensions ?? [];
   const filteredCategories = (filter as { categories?: string[] })?.categories ?? [];
   const filteredKeywords = (filter as { keywords?: string[] })?.keywords ?? [];
+  let matchingExtensions: QuarkusExtensionType[] = [];
 
   const filterExtension = (e: QuarkusExtensionType) => {
           const matchingCategory = !filteredCategories || filteredCategories.length == 0 || filteredCategories.some(regex => !e.category || e.category.match(regex));
@@ -181,6 +180,7 @@ export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData,
 
     // Download the Component list
     useEffect(() => {
+        console.log('useEffect - code.quarkus.io - Form data: ', formData);
         axios.get(apiUrl, axiosRequestConfig).then((response) => {
             response.data.forEach((e: QuarkusExtensionType) => {
                 if (filterExtension(e)) {
@@ -190,14 +190,44 @@ export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData,
         }).catch((error) => {
             console.log('Error fetching Quarkus Extensions:', error); 
         })
+
+        /*  If formData is not empty as this is the case when user selects extensions,
+            then the value (which is passed to the MUI component) should get them
+
+            As this useEffect is called every time we move to the screen including the extensions list,
+            this is why the value property should be reset with the FormData values
+        */
+        if (formData && formData?.length > 0 ) {
+            matchingExtensions = uniqueExtensions(quarkusExtensions).filter((extension) => formData.includes(extension.id));
+            console.log('Matching extensions from formData: ',matchingExtensions);
+        }
+
     }, []);
 
 
     // Populate value changes of autocomplete to the actual field
     useEffect(() => {
-        onChange(value
-            .filter((extension: QuarkusExtensionType) => extension.id)
-            .map((extension: QuarkusExtensionType) => extension.id))
+        let newValue: string[] = [];
+
+        if (matchingExtensions.length > 0 && value.length == 0) {
+            // console.log('matchingExtensions.length > 0 && value.length == 0 : TRUE');
+            newValue = matchingExtensions
+                .filter((extension: QuarkusExtensionType) => extension.id)
+                .map((extension: QuarkusExtensionType) => extension.id);
+        } else {
+            // console.log('matchingExtensions.length > 0 && value.length == 0 : FALSE');
+            newValue = value
+                .filter((extension: QuarkusExtensionType) => extension.id)
+                .map((extension: QuarkusExtensionType) => extension.id)
+        }
+
+        // console.log('useEffect value - matchingExtensions: ', matchingExtensions);
+        // console.log('useEffect value - Value changed to: ', value);
+        // console.log('useEffect value - Form data of the field is: ', formData);
+        // console.log('useEffect value - New Value calculated is: ', newValue);
+
+        onChange(newValue)
+
     }, [value]);
 
     // @ts-ignore
@@ -211,9 +241,13 @@ export const QuarkusExtensionList =  ({ onChange, rawErrors, required, formData,
                 <div {...getRootProps()}>
                     <Label {...getInputLabelProps()}>Quarkus Extension(s)</Label>
                     <InputWrapper ref={setAnchorEl} className={focused ? 'focused' : ''}>
-                        {value.map((option: QuarkusExtensionType, index: number) => (
-                            option.name && <Tag label={option.name} {...getTagProps({ index })} />
-                        ))}
+                        {formData && formData.length > 0 ? (
+                            uniqueExtensions(quarkusExtensions)
+                                .filter((extension) => formData.includes(extension.id))
+                                .filter((extension: QuarkusExtensionType) => extension.id)
+                                .map((option: QuarkusExtensionType, index: number) => (
+                                option.name && <Tag label={option.name} {...getTagProps({ index })} />))
+                        ): undefined}
                         <input {...getInputProps()} />
                     </InputWrapper>
                 </div>
