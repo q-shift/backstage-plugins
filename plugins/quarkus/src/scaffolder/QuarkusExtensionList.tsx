@@ -199,7 +199,7 @@ export const QuarkusExtensionList = ({ onChange, rawErrors, required, formData, 
         */
         if (formData && formData?.length > 0 ) {
             matchingExtensions = uniqueExtensions(quarkusExtensions).filter((extension) => formData.includes(extension.id));
-            console.log('Matching extensions from formData: ',matchingExtensions);
+            // console.log('Matching extensions from formData: ',matchingExtensions);
         }
 
     }, []);
