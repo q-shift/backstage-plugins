@@ -75,6 +75,19 @@ yarn add --cwd packages/app "@qshift/plugin-quarkus"
 
 Next, customize the `packages/app/src/App.tsx` file according to the field that you plan to use and described hereafter
 
+### Local development
+
+When you develop a new `<ScaffolderFieldExtensions/>`, then we recommend
+to launch the plugin locally using the `createDevApp` of the `./dev/index.tsx` file for testing/debugging purposes.
+
+To play with it, open a terminal and run the command: `yarn start` within the `./plugins/quarkus` folder
+
+**NOTE:** Don't forget to open a second terminal and to launch the backend or [backend-next](../../docs/backend-system/index.md) there, using `yarn start` and to specify the locations of the templates to play with !
+
+If your IDE supports to debug an application that is running on the localhost in the development mode like [IntelliJ](https://www.jetbrains.com/help/idea/debugging-javascript-in-chrome.html#debugging_js_on_local_host_development_mode), then use the commands "Command + Shift" and click on the url: `http://localhost:3000`, next add a breakpoint within your tsx file
+
+![local-debug.png](doc%2Flocal-debug.png)
+
 ### Quarkus extensions field
 
 This field allows a user to pick up Quarkus extension(s) from the code generator server.
