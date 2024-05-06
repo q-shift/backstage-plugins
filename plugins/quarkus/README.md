@@ -158,10 +158,10 @@ spec:
 When done, you will be able to create a new Quarkus project from the quickstart selected.
 
 Quarkus Quickstart Picker - default (field):
-![quickstart-1.png](plugins/quarkus/doc/quickstart-1.png)
+![quickstart-1.png](/plugins/quarkus/doc/quickstart-1.png)
 
 Quarkus Quickstart Picker - select (field):
-![quickstart-2.png](plugins/quarkus/doc/quickstart-2.png)
+![quickstart-2.png](/plugins/quarkus/doc/quickstart-2.png)
 
 ### Quarkus Version list field
 
@@ -214,7 +214,7 @@ When done, you will be able to select the quarkus version to be used to scaffold
 your quarkus project
 
 Quarkus Version list - Select (field):
-![version-list.png](plugins/quarkus/doc/version-list.png)
+![version-list.png](/plugins/quarkus/doc/version-list.png)
 
 Quarkus Version list - Recommended (field):
-![version-recommended.png](plugins/quarkus/doc/version-recommended.png)
+![version-recommended.png](/plugins/quarkus/doc/version-recommended.png)
