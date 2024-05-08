@@ -99,13 +99,13 @@ If you would like to use a different code generator server, set the following pr
 ```
 
 Quarkus Extension List - default (field):
-![extensions-1.png](plugins%2Fquarkus%2Fdoc%2Fextensions-1.png)
+![extensions-1.png](/plugins%2Fquarkus%2Fdoc%2Fextensions-1.png)
 
 Quarkus Extension List - Select (field):
-![extensions-2.png](plugins%2Fquarkus%2Fdoc%2Fextensions-2.png)
+![extensions-2.png](/plugins%2Fquarkus%2Fdoc%2Fextensions-2.png)
 
 Quarkus Extension List - Added (field):
-![extensions-3.png](plugins%2Fquarkus%2Fdoc%2Fextensions-3.png)
+![extensions-3.png](/plugins%2Fquarkus%2Fdoc%2Fextensions-3.png)
 
 ### Quarkus Quickstart picker field
 
